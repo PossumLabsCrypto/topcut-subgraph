@@ -25,15 +25,10 @@ dataSources:
         - name: TopCutVault
           file: ./abis/TopCutVault.json
       eventHandlers:
-        - event: AffiliatePointsUpdated(indexed uint256,uint256)
-          handler: handleAffiliatePointsUpdated
-        - event: AffiliateRewardsClaimed(indexed uint256,uint256)
-          handler: handleAffiliateRewardsClaimed
+
         - event: LoyaltyPointsUpdated(indexed address,uint256)
           handler: handleLoyaltyPointsUpdated
         - event: LoyaltyRewardDistributed(indexed address,uint256)
           handler: handleLoyaltyRewardDistributed
-        - event: RedeemedPSM(indexed address,uint256,uint256)
-          handler: handleRedeemedPSM
       file: ./src/top-cut-vault.ts
 
