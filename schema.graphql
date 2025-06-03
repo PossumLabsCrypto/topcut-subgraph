@@ -1,0 +1,5 @@
+type LoyaltyPointsList @entity(immutable: false) {
+  id: Bytes! # trader address
+  loyaltyPoints: BigInt! # uint256
+  isActive: Boolean! # bool
+}

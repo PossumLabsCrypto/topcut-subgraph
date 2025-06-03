@@ -3,6 +3,9 @@
     "TopCutVault": {
       "address": "0x9c069A587e304129c4fA762A78d9806a60376013",
       "startBlock": 159068915
+    },
+    "TopCutNFT": {
+      "address": "0xAF2878a6dF00A79F6f6998FA9EaFb09aD920e851"
     }
   }
 }

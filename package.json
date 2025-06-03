@@ -1,14 +1,18 @@
 {
-  "name": "topcut-graph",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
+  "name": "topcut",
+  "license": "UNLICENSED",
   "scripts": {
-    "build": "tsc"
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ topcut",
+    "create-local": "graph create --node http://localhost:8020/ topcut",
+    "remove-local": "graph remove --node http://localhost:8020/ topcut",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 topcut",
+    "test": "graph test"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "typescript": "^5.5.3"
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.74.1",
+    "@graphprotocol/graph-ts": "0.32.0"
   },
-  "private": true
+  "devDependencies": { "matchstick-as": "0.5.0" }
 }
