@@ -1,0 +1,262 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      { "name": "_salt", "type": "bytes32", "internalType": "bytes32" },
+      {
+        "name": "_firstDistributionTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  { "type": "fallback", "stateMutability": "payable" },
+  { "type": "receive", "stateMutability": "payable" },
+  {
+    "type": "function",
+    "name": "AFFILIATE_NFT",
+    "inputs": [],
+    "outputs": [
+      { "name": "", "type": "address", "internalType": "contract ITopCutNFT" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "EXTRACTION_FEE_ETH",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "affiliatePoints",
+    "inputs": [
+      { "name": "nftID", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [
+      { "name": "points", "type": "uint256", "internalType": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "claimAffiliateReward",
+    "inputs": [
+      { "name": "_refID", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_pointsRedeemed",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      { "name": "_minReceived", "type": "uint256", "internalType": "uint256" },
+      { "name": "_deadline", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "extractTokenBalance",
+    "inputs": [
+      { "name": "_token", "type": "address", "internalType": "address" },
+      { "name": "_minReceived", "type": "uint256", "internalType": "uint256" },
+      { "name": "_deadline", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "function",
+    "name": "leadingPoints",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "loyaltyPoints",
+    "inputs": [
+      { "name": "trader", "type": "address", "internalType": "address" }
+    ],
+    "outputs": [
+      { "name": "points", "type": "uint256", "internalType": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "loyaltyPointsLeader",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "address", "internalType": "address" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "nextDistributionTime",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256", "internalType": "uint256" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "quoteAffiliateReward",
+    "inputs": [
+      {
+        "name": "_pointsRedeemed",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      { "name": "ethReward", "type": "uint256", "internalType": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "quoteRedeemPSM",
+    "inputs": [
+      { "name": "_amountPSM", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [
+      { "name": "ethOut", "type": "uint256", "internalType": "uint256" }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "redeemPSM",
+    "inputs": [
+      { "name": "_amountPSM", "type": "uint256", "internalType": "uint256" },
+      { "name": "_minReceived", "type": "uint256", "internalType": "uint256" },
+      { "name": "_deadline", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "updatePoints",
+    "inputs": [
+      { "name": "_trader", "type": "address", "internalType": "address" },
+      { "name": "_refID", "type": "uint256", "internalType": "uint256" }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "type": "event",
+    "name": "AffiliatePointsUpdated",
+    "inputs": [
+      {
+        "name": "nftID",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "affiliatePoints",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "AffiliateRewardsClaimed",
+    "inputs": [
+      {
+        "name": "nftID",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "LoyaltyPointsUpdated",
+    "inputs": [
+      {
+        "name": "trader",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "loyaltyPoints",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "LoyaltyRewardDistributed",
+    "inputs": [
+      {
+        "name": "trader",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "RedeemedPSM",
+    "inputs": [
+      {
+        "name": "user",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "amountPSM",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "reward",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  { "type": "error", "name": "CeilingBreached", "inputs": [] },
+  { "type": "error", "name": "DeadlineExpired", "inputs": [] },
+  { "type": "error", "name": "FailedToSendNativeToken", "inputs": [] },
+  { "type": "error", "name": "InsufficientPoints", "inputs": [] },
+  { "type": "error", "name": "InsufficientReceived", "inputs": [] },
+  { "type": "error", "name": "InvalidAffiliateID", "inputs": [] },
+  { "type": "error", "name": "InvalidConstructor", "inputs": [] },
+  { "type": "error", "name": "InvalidPaidETH", "inputs": [] },
+  { "type": "error", "name": "InvalidToken", "inputs": [] },
+  { "type": "error", "name": "NotOwnerOfNFT", "inputs": [] },
+  { "type": "error", "name": "ZeroAddress", "inputs": [] },
+  { "type": "error", "name": "ZeroPointRedeem", "inputs": [] }
+]
