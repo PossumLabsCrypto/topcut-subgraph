@@ -6,6 +6,9 @@
     },
     "TopCutNFT": {
       "address": "0xAF2878a6dF00A79F6f6998FA9EaFb09aD920e851"
+    },
+    "BTC_TopCutMarket": {
+      "address": "0x083b923c36c475253761F51D913F479006dFd969"
     }
   }
 }

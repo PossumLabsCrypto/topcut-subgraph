@@ -25,10 +25,96 @@ dataSources:
         - name: TopCutVault
           file: ./abis/TopCutVault.json
       eventHandlers:
-
         - event: LoyaltyPointsUpdated(indexed address,uint256)
           handler: handleLoyaltyPointsUpdated
         - event: LoyaltyRewardDistributed(indexed address,uint256)
           handler: handleLoyaltyRewardDistributed
       file: ./src/top-cut-vault.ts
-
+  - kind: ethereum
+    name: BTC_TopCutMarket1
+    network: arbitrum-sepolia
+    source:
+      address: "0x26b670941282c8051883d9b1f6b77dd1f2e548d7"
+      abi: BTC_TopCutMarket
+      startBlock: 159068915
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PendingClaims
+        - PredictionPosted
+      abis:
+        - name: BTC_TopCutMarket
+          file: ./abis/BTC_TopCutMarket.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted
+      file: ./src/btc-top-cut-market.ts
+  - kind: ethereum
+    name: BTC_TopCutMarket2
+    network: arbitrum-sepolia
+    source:
+      address: "0xb8c4734cc7ad63bad43018f717e954dbd4769f8a"
+      abi: BTC_TopCutMarket
+      startBlock: 159068915
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PendingClaims
+        - PredictionPosted
+      abis:
+        - name: BTC_TopCutMarket
+          file: ./abis/BTC_TopCutMarket.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted
+      file: ./src/btc-top-cut-market.ts
+  - kind: ethereum
+    name: BTC_TopCutMarket3
+    network: arbitrum-sepolia
+    source:
+      address: "0xf55af9d7701535ba08e541c8eba4c0546a395164"
+      abi: BTC_TopCutMarket
+      startBlock: 159068915
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PendingClaims
+        - PredictionPosted
+      abis:
+        - name: BTC_TopCutMarket
+          file: ./abis/BTC_TopCutMarket.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted
+      file: ./src/btc-top-cut-market.ts
+  - kind: ethereum
+    name: ETH_TopCutMarket
+    network: arbitrum-sepolia
+    source:
+      address: "0x083b923c36c475253761f51d913f479006dfd969"
+      abi: BTC_TopCutMarket
+      startBlock: 159068915
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PendingClaims
+        - PredictionPosted
+      abis:
+        - name: BTC_TopCutMarket
+          file: ./abis/BTC_TopCutMarket.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted
+      file: ./src/btc-top-cut-market.ts
