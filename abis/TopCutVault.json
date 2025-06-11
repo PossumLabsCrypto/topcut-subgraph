@@ -50,7 +50,11 @@
         "type": "uint256",
         "internalType": "uint256"
       },
-      { "name": "_minReceived", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_minReceived",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       { "name": "_deadline", "type": "uint256", "internalType": "uint256" }
     ],
     "outputs": [],
@@ -61,7 +65,11 @@
     "name": "extractTokenBalance",
     "inputs": [
       { "name": "_token", "type": "address", "internalType": "address" },
-      { "name": "_minReceived", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_minReceived",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       { "name": "_deadline", "type": "uint256", "internalType": "uint256" }
     ],
     "outputs": [],
@@ -130,7 +138,11 @@
     "name": "redeemPSM",
     "inputs": [
       { "name": "_amountPSM", "type": "uint256", "internalType": "uint256" },
-      { "name": "_minReceived", "type": "uint256", "internalType": "uint256" },
+      {
+        "name": "_minReceived",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
       { "name": "_deadline", "type": "uint256", "internalType": "uint256" }
     ],
     "outputs": [],

@@ -51,6 +51,8 @@ dataSources:
       eventHandlers:
         - event: PredictionPosted(indexed address,indexed uint256,uint256)
           handler: handlePredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleCohortSettled
       file: ./src/btc-top-cut-market.ts
   - kind: ethereum
     name: BTC_TopCutMarket2
@@ -73,6 +75,8 @@ dataSources:
       eventHandlers:
         - event: PredictionPosted(indexed address,indexed uint256,uint256)
           handler: handlePredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleCohortSettled
       file: ./src/btc-top-cut-market.ts
   - kind: ethereum
     name: BTC_TopCutMarket3
@@ -95,6 +99,8 @@ dataSources:
       eventHandlers:
         - event: PredictionPosted(indexed address,indexed uint256,uint256)
           handler: handlePredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleCohortSettled
       file: ./src/btc-top-cut-market.ts
   - kind: ethereum
     name: ETH_TopCutMarket
@@ -117,4 +123,6 @@ dataSources:
       eventHandlers:
         - event: PredictionPosted(indexed address,indexed uint256,uint256)
           handler: handlePredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleCohortSettled
       file: ./src/btc-top-cut-market.ts
