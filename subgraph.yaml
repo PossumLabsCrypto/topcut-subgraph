@@ -8,9 +8,9 @@ dataSources:
     name: TopCutVault
     network: arbitrum-sepolia
     source:
-      address: "0x9c069A587e304129c4fA762A78d9806a60376013"
+      address: "0xfc12e59c1c8682c6762211a6cc101a4bc1d8376c"
       abi: TopCutVault
-      startBlock: 159068915
+      startBlock: 162545005
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -34,9 +34,9 @@ dataSources:
     name: BTC_TopCutMarket1
     network: arbitrum-sepolia
     source:
-      address: "0x26b670941282c8051883d9b1f6b77dd1f2e548d7"
+      address: "0xea714ff23bc52ce943cdbde6114c9ec456dec8e4"
       abi: BTC_TopCutMarket
-      startBlock: 159068915
+      startBlock: 162545005
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -58,9 +58,9 @@ dataSources:
     name: BTC_TopCutMarket2
     network: arbitrum-sepolia
     source:
-      address: "0xb8c4734cc7ad63bad43018f717e954dbd4769f8a"
+      address: "0x26165c6861455935636361accdea66c034c3fab8"
       abi: BTC_TopCutMarket
-      startBlock: 159068915
+      startBlock: 162545005
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -82,9 +82,9 @@ dataSources:
     name: BTC_TopCutMarket3
     network: arbitrum-sepolia
     source:
-      address: "0xf55af9d7701535ba08e541c8eba4c0546a395164"
+      address: "0x17392bd3f07b49dec35d032933f891c151ec554f"
       abi: BTC_TopCutMarket
-      startBlock: 159068915
+      startBlock: 162545005
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -106,9 +106,9 @@ dataSources:
     name: ETH_TopCutMarket
     network: arbitrum-sepolia
     source:
-      address: "0x083b923c36c475253761f51d913f479006dfd969"
+      address: "0x8e53f80be2af3b91d994c0658d4d6db1223b8183"
       abi: BTC_TopCutMarket
-      startBlock: 159068915
+      startBlock: 162545005
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
