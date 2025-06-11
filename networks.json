@@ -1,23 +1,23 @@
 {
   "arbitrum-sepolia": {
     "TopCutVault": {
-      "address": "0xfc12e59c1c8682c6762211a6cc101a4bc1d8376c",
-      "startBlock": 162545005
+      "address": "0xbc02888B665D8Bf1eddb1707C8B945D895D9d4a2",
+      "startBlock": 162582482
     },
     "TopCutNFT": {
       "address": "0xb4de6fbbbe17a6ce14706005684049ce4e81dc53"
     },
     "BTC_TopCutMarket1": {
-      "address": "0xea714ff23bc52ce943cdbde6114c9ec456dec8e4"
+      "address": "0x4a74438b91a1079E84bD6BddDFB199A1314B126a"
     },
     "BTC_TopCutMarket2": {
-      "address": "0x26165c6861455935636361accdea66c034c3fab8"
+      "address": "0x32F7ce90AF125a09c59360098d096956699fbb79"
     },
     "BTC_TopCutMarket3": {
-      "address": "0x17392bd3f07b49dec35d032933f891c151ec554f"
+      "address": "0x8F7806B5407B39f9263026088CE904cE9ED1D157"
     },
     "BTC_TopCutMarket4": {
-      "address": "0x8e53f80be2af3b91d994c0658d4d6db1223b8183"
+      "address": "0xaeDD5c62d5e955294a1f10DA88F9F5f8F7C33E9C"
     }
   }
 }

@@ -9,14 +9,10 @@ type MarketTrades @entity {
   trades: [Trade!]! @derivedFrom(field: "market")
 }
 
-type Trade @entity(immutable: true) {
+type Trade @entity {
   id: ID! # trade ID
   market: MarketTrades! @link
   trader: Bytes! # trader address
   price: BigInt! # uint256
   settlementTime: BigInt! # uint256
 }
-#"0x26b670941282c8051883d9b1f6b77dd1f2e548d7",
-#"0xb8c4734cc7ad63bad43018f717e954dbd4769f8a",
-#"0xf55af9d7701535ba08e541c8eba4c0546a395164",
-#"0x083b923c36c475253761f51d913f479006dfd969",
