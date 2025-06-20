@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: TopCutVault
-    network: arbitrum-sepolia
+    network: arbitrum
     source:
-      address: "0xbc02888B665D8Bf1eddb1707C8B945D895D9d4a2"
+      address: "0x3cfc3CBA1B4aAF969057F590D23efe46848F4270"
       abi: TopCutVault
-      startBlock: 162582482
+      startBlock: 348072019
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -32,11 +32,11 @@ dataSources:
       file: ./src/top-cut-vault.ts
   - kind: ethereum
     name: BTC_TopCutMarket1
-    network: arbitrum-sepolia
+    network: arbitrum
     source:
-      address: "0x4a74438b91a1079E84bD6BddDFB199A1314B126a"
+      address: "0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1"
       abi: BTC_TopCutMarket
-      startBlock: 162582482
+      startBlock: 348072019
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -56,11 +56,11 @@ dataSources:
       file: ./src/btc-top-cut-market.ts
   - kind: ethereum
     name: BTC_TopCutMarket2
-    network: arbitrum-sepolia
+    network: arbitrum
     source:
-      address: "0x32F7ce90AF125a09c59360098d096956699fbb79"
+      address: "0x135a74aaac0E9F4622B94800d069d531d31c4f46"
       abi: BTC_TopCutMarket
-      startBlock: 162582482
+      startBlock: 348072019
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -80,11 +80,11 @@ dataSources:
       file: ./src/btc-top-cut-market.ts
   - kind: ethereum
     name: BTC_TopCutMarket3
-    network: arbitrum-sepolia
+    network: arbitrum
     source:
-      address: "0x8F7806B5407B39f9263026088CE904cE9ED1D157"
+      address: "0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5"
       abi: BTC_TopCutMarket
-      startBlock: 162582482
+      startBlock: 348072019
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -103,12 +103,36 @@ dataSources:
           handler: handleCohortSettled
       file: ./src/btc-top-cut-market.ts
   - kind: ethereum
-    name: ETH_TopCutMarket
-    network: arbitrum-sepolia
+    name: BTC_TopCutMarket4
+    network: arbitrum
     source:
-      address: "0xaeDD5c62d5e955294a1f10DA88F9F5f8F7C33E9C"
+      address: "0xB8eC8622D8B7924337CA7B143683459fE5a13f79"
       abi: BTC_TopCutMarket
-      startBlock: 162582482
+      startBlock: 348072019
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PendingClaims
+        - PredictionPosted
+      abis:
+        - name: BTC_TopCutMarket
+          file: ./abis/BTC_TopCutMarket.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleCohortSettled
+      file: ./src/btc-top-cut-market.ts
+  - kind: ethereum
+    name: BTC_TopCutMarket5
+    network: arbitrum
+    source:
+      address: "0xE8B9a818D57E2413E05144311E2d4d190c3f711c"
+      abi: BTC_TopCutMarket
+      startBlock: 348072019
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
