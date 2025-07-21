@@ -7,6 +7,7 @@ type LoyaltyPointsList @entity {
 type MarketTrades @entity {
   id: Bytes! # market address
   trades: [Trade!]! @derivedFrom(field: "market")
+  history: [TradeHistory!]! @derivedFrom(field: "market")
 }
 
 type Trade @entity {
@@ -15,4 +16,13 @@ type Trade @entity {
   trader: Bytes! # trader address
   price: BigInt! # uint256
   settlementTime: BigInt! # uint256
+}
+
+type TradeHistory @entity {
+  id: ID! # trade history ID
+  market: MarketTrades! @link
+  trader: Bytes! # trader address
+  price: BigInt! # uint256
+  settlementTime: BigInt! # uint256
+  isActive: Boolean! # bool
 }

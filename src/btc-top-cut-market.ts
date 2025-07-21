@@ -3,7 +3,7 @@ import {
   CohortSettled as CohortSettledEvent,
   PredictionPosted as PredictionPostedEvent,
 } from "../generated/BTC_TopCutMarket1/BTC_TopCutMarket";
-import { MarketTrades, Trade } from "../generated/schema";
+import { MarketTrades, Trade, TradeHistory } from "../generated/schema";
 
 export function handlePredictionPosted(event: PredictionPostedEvent): void {
   const marketHex = event.address;
@@ -17,11 +17,23 @@ export function handlePredictionPosted(event: PredictionPostedEvent): void {
   }
 
   const trade = new Trade(event.transaction.hash.toHex());
+  const tradeHistory = new TradeHistory(event.transaction.hash.toHex());
   trade.trader = event.params.user;
+  tradeHistory.trader = event.params.user;
+
   trade.price = event.params.price;
+  tradeHistory.price = event.params.price;
+
   trade.settlementTime = event.params.settlementTime;
+  tradeHistory.settlementTime = event.params.settlementTime;
+
   trade.market = marketAddress;
+  tradeHistory.market = marketAddress;
+
+  tradeHistory.isActive = true;
+
   trade.save();
+  tradeHistory.save();
 
   marketTrades.save();
 }
@@ -50,6 +62,11 @@ export function handleCohortSettled(event: CohortSettledEvent): void {
 
     if (tradeSettlementTime.lt(settlementTime)) {
       store.remove("Trade", trade.id);
+      let tradeHistory = TradeHistory.load(trade.id);
+      if (tradeHistory) {
+        tradeHistory.isActive = false;
+        tradeHistory.save();
+      }
     }
   }
 
