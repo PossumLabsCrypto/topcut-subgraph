@@ -58,7 +58,7 @@ dataSources:
     name: BTC_TopCutMarket2
     network: arbitrum-one
     source:
-      address: "0x135a74aaac0E9F4622B94800d069d531d31c4f46"
+      address: "0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586"
       abi: BTC_TopCutMarket
       startBlock: 348072019
     mapping:
