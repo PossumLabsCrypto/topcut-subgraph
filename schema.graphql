@@ -25,4 +25,5 @@ type TradeHistory @entity {
   price: BigInt! # uint256
   settlementTime: BigInt! # uint256
   isActive: Boolean! # bool
+  winners: BigInt! 
 }

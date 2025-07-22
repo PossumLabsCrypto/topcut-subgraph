@@ -59,10 +59,13 @@ export function handleCohortSettled(event: CohortSettledEvent): void {
       continue; // Skip if trade is null
     }
     const tradeSettlementTime = trade.settlementTime;
+    let tradeHistory = TradeHistory.load(trade.id);
+    if (tradeHistory) tradeHistory.winners = event.params.winners;
+
 
     if (tradeSettlementTime.lt(settlementTime)) {
       store.remove("Trade", trade.id);
-      let tradeHistory = TradeHistory.load(trade.id);
+
       if (tradeHistory) {
         tradeHistory.isActive = false;
         tradeHistory.save();
