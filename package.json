@@ -8,7 +8,8 @@
     "create-local": "graph create --node http://localhost:8020/ topcut",
     "remove-local": "graph remove --node http://localhost:8020/ topcut",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 topcut",
-    "test": "graph test"
+    "test": "graph test",
+    "add-markets": "node scripts/add-markets.js"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.74.1",
