@@ -8,6 +8,7 @@ type MarketTrades @entity {
   id: Bytes! # market address
   trades: [Trade!]! @derivedFrom(field: "market")
   history: [TradeHistory!]! @derivedFrom(field: "market")
+  settledCohorts: [SettledCohorts!]! @derivedFrom(field: "market")
 }
 
 type Trade @entity {
@@ -25,5 +26,12 @@ type TradeHistory @entity {
   price: BigInt! # uint256
   settlementTime: BigInt! # uint256
   isActive: Boolean! # bool
-  winners: BigInt
+}
+
+type SettledCohorts @entity(immutable: true) {
+  id: ID! # cohort ID
+  cohortSize: BigInt! # uint256
+  settlementTime: BigInt! # uint256
+  winners: BigInt! # uint256
+  market: MarketTrades! @link
 }

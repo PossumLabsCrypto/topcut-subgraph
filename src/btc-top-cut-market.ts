@@ -3,7 +3,12 @@ import {
   CohortSettled as CohortSettledEvent,
   PredictionPosted as PredictionPostedEvent,
 } from "../generated/BTC_TopCutMarket1/BTC_TopCutMarket";
-import { MarketTrades, Trade, TradeHistory } from "../generated/schema";
+import {
+  MarketTrades,
+  SettledCohorts,
+  Trade,
+  TradeHistory,
+} from "../generated/schema";
 
 export function handlePredictionPosted(event: PredictionPostedEvent): void {
   const marketHex = event.address;
@@ -50,6 +55,15 @@ export function handleCohortSettled(event: CohortSettledEvent): void {
     return; // No trades to settle
   }
 
+  {
+    const newSettledCohort = new SettledCohorts(event.transaction.hash.toHex());
+    newSettledCohort.market = marketAddress;
+    newSettledCohort.settlementTime = event.params.settlementTime;
+    newSettledCohort.cohortSize = event.params.cohortSize;
+    newSettledCohort.winners = event.params.winners;
+    newSettledCohort.save();
+  }
+
   let trades = marketTrades.trades.load();
   const settlementTime = event.params.settlementTime;
 
@@ -60,16 +74,14 @@ export function handleCohortSettled(event: CohortSettledEvent): void {
     }
     const tradeSettlementTime = trade.settlementTime;
     let tradeHistory = TradeHistory.load(trade.id);
-    if (tradeHistory) tradeHistory.winners = event.params.winners;
 
+    if (tradeHistory) {
+      tradeHistory.isActive = false;
+      tradeHistory.save();
+    }
 
     if (tradeSettlementTime.lt(settlementTime)) {
       store.remove("Trade", trade.id);
-
-      if (tradeHistory) {
-        tradeHistory.isActive = false;
-        tradeHistory.save();
-      }
     }
   }
 
