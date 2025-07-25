@@ -17,7 +17,7 @@ abis/TopCutMarket_V2.json  # Example for V2
 Create a new handler file if needed:
 
 ```
-src/top-cut-market-v2.ts  # Example for V2
+src/market.ts  # Example for V2
 ```
 
 ### 3. Update Market Configuration
@@ -33,7 +33,7 @@ const MARKET_CONFIGS = {
     // Add your new version here
     abiName: "TopCutMarket_V2",
     abiFile: "./abis/TopCutMarket_V2.json",
-    handlerFile: "./src/top-cut-market-v2.ts",
+    handlerFile: "./src/market.ts",
     entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
     eventHandlers: [
       {

@@ -149,4 +149,4 @@ dataSources:
           handler: handlePredictionPosted
         - event: CohortSettled(uint256,uint256,uint256,uint256)
           handler: handleCohortSettled
-      file: ./src/top-cut-market-v2.ts
+      file: ./src/market.ts
