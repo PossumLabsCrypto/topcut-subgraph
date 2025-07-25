@@ -32,11 +32,11 @@ const MARKET_CONFIGS = {
     eventHandlers: [
       {
         event: "PredictionPosted(indexed address,indexed uint256,uint256)",
-        handler: "handlePredictionPosted",
+        handler: "handlePredictionPosted_V1",
       },
       {
         event: "CohortSettled(uint256,uint256,uint256)",
-        handler: "handleCohortSettled",
+        handler: "handleCohortSettled_V1",
       },
     ],
   },
@@ -48,11 +48,11 @@ const MARKET_CONFIGS = {
     eventHandlers: [
       {
         event: "PredictionPosted(indexed address,indexed uint256,uint256)",
-        handler: "handlePredictionPosted",
+        handler: "handlePredictionPosted_V2",
       },
       {
         event: "CohortSettled(uint256,uint256,uint256,uint256)",
-        handler: "handleCohortSettled",
+        handler: "handleCohortSettled_V2",
       },
     ],
   },

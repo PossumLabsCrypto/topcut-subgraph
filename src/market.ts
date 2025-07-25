@@ -1,4 +1,4 @@
-import { store } from "@graphprotocol/graph-ts";
+import { Address, BigInt, Bytes, store } from "@graphprotocol/graph-ts";
 import { MarketTrades, SettledCohorts, Trade } from "../generated/schema";
 
 import {
@@ -11,73 +11,118 @@ import {
   PredictionPosted as PredictionPostedEvent_V2,
 } from "../generated/TopCutMarket_V2_1/TopCutMarket_V2";
 
-type TPredictionPostedEvent =
-  | PredictionPostedEvent_V1
-  | PredictionPostedEvent_V2;
-type TCohortSettledEvent = CohortSettledEvent_V1 | CohortSettledEvent_V2;
+// Remove union types - AssemblyScript doesn't support them
+// type TPredictionPostedEvent = PredictionPostedEvent_V1 | PredictionPostedEvent_V2;
+// type TCohortSettledEvent = CohortSettledEvent_V1 | CohortSettledEvent_V2;
 
-export function handlePredictionPosted(event: TPredictionPostedEvent): void {
-  const marketHex = event.address;
-  const marketAddress = marketHex ? marketHex : null;
+// Overloaded function pattern in exports - AssemblyScript will handle this
+export function handlePredictionPosted_V1(
+  event: PredictionPostedEvent_V1
+): void {
+  handlePredictionPostedCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.user,
+    event.params.price,
+    event.params.settlementTime
+  );
+}
+
+export function handlePredictionPosted_V2(
+  event: PredictionPostedEvent_V2
+): void {
+  handlePredictionPostedCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.user,
+    event.params.price,
+    event.params.settlementTime
+  );
+}
+
+export function handleCohortSettled_V1(event: CohortSettledEvent_V1): void {
+  handleCohortSettledCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.settlementTime,
+    event.params.cohortSize,
+    event.params.winners,
+    null // V1 doesn't have settlementPrice
+  );
+}
+
+export function handleCohortSettled_V2(event: CohortSettledEvent_V2): void {
+  handleCohortSettledCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.settlementTime,
+    event.params.cohortSize,
+    event.params.winners,
+    event.params.settlementPrice // V2 has settlementPrice
+  );
+}
+
+// Common implementation functions
+function handlePredictionPostedCommon(
+  address: Address,
+  txHash: Bytes,
+  user: Address,
+  price: BigInt,
+  settlementTime: BigInt
+): void {
+  const marketAddress = address;
   if (!marketAddress) {
-    return; // Handle the case where the market address is not available
+    return;
   }
+
   let marketTrades = MarketTrades.load(marketAddress);
   if (!marketTrades) {
     marketTrades = new MarketTrades(marketAddress);
   }
 
-  const trade = new Trade(event.transaction.hash.toHex());
-  trade.trader = event.params.user;
-
-  trade.price = event.params.price;
-
-  trade.settlementTime = event.params.settlementTime;
-
+  const trade = new Trade(txHash.toHex());
+  trade.trader = user;
+  trade.price = price;
+  trade.settlementTime = settlementTime;
   trade.market = marketAddress;
-
   trade.isActive = true;
 
   trade.save();
-
   marketTrades.save();
 }
 
-export function handleCohortSettled(event: TCohortSettledEvent): void {
-  const marketHex = event.address;
-
-  const marketAddress = marketHex ? marketHex : null;
+function handleCohortSettledCommon(
+  address: Address,
+  txHash: Bytes,
+  settlementTime: BigInt,
+  cohortSize: BigInt,
+  winners: BigInt,
+  settlementPrice: BigInt | null
+): void {
+  const marketAddress = address;
   if (!marketAddress) {
-    return; // Handle the case where the market address is not available
+    return;
   }
+
   let marketTrades = MarketTrades.load(marketAddress);
   if (!marketTrades) {
-    return; // No trades to settle
+    return;
   }
 
-  {
-    const newSettledCohort = new SettledCohorts(event.transaction.hash.toHex());
-    newSettledCohort.market = marketAddress;
-    newSettledCohort.settlementTime = event.params.settlementTime;
-    newSettledCohort.cohortSize = event.params.cohortSize;
-    newSettledCohort.winners = event.params.winners;
-    // Explicitly handle settlementPrice
-    if (event instanceof CohortSettledEvent_V2) {
-      newSettledCohort.settlementPrice = event.params.settlementPrice;
-    } else {
-      // V1 events don't have settlementPrice, leave as null
-      newSettledCohort.settlementPrice = null;
-    }
-    newSettledCohort.save();
-  }
+  const newSettledCohort = new SettledCohorts(txHash.toHex());
+  newSettledCohort.market = marketAddress;
+  newSettledCohort.settlementTime = settlementTime;
+  newSettledCohort.cohortSize = cohortSize;
+  newSettledCohort.winners = winners;
+  newSettledCohort.settlementPrice = settlementPrice;
+  newSettledCohort.save();
 
   let trades = marketTrades.trades.load();
-  const settlementTime = event.params.settlementTime;
 
   for (let i = 0; i < trades.length; i++) {
     const trade = trades[i];
     if (!trade) {
-      continue; // Skip if trade is null
+      continue;
     }
 
     if (trade.settlementTime.lt(settlementTime) && trade.isActive) {
