@@ -12,7 +12,7 @@ This directory contains scripts to automatically add new TopCut markets to your 
 
 ## Supported Market Versions
 
-- **V1**: Uses `TopCutMarket_V1.json` ABI and `top-cut-market.ts` handler
+- **V1**: Uses `TopCutMarket_V1.json` ABI and `market.ts` handler
 - **V2**: Uses `TopCutMarket_V2.json` ABI and `top-cut-market-v2.ts` handler
 - More versions can be easily added by updating the `MARKET_CONFIGS` in `add-markets.js`
 
@@ -131,7 +131,7 @@ The scripts use these default values (you can modify them in `add-markets.js`):
 - **Network**: `arbitrum-one`
 - **Start Block**: `348072019`
 - **ABI File**: `./abis/TopCutMarket_V1.json`
-- **Handler File**: `./src/top-cut-market.ts`
+- **Handler File**: `./src/market.ts`
 
 ## Safety Features
 

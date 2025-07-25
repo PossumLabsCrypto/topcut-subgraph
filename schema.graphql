@@ -7,20 +7,11 @@ type LoyaltyPointsList @entity {
 type MarketTrades @entity {
   id: Bytes! # market address
   trades: [Trade!]! @derivedFrom(field: "market")
-  history: [TradeHistory!]! @derivedFrom(field: "market")
   settledCohorts: [SettledCohorts!]! @derivedFrom(field: "market")
 }
 
 type Trade @entity {
   id: ID! # trade ID
-  market: MarketTrades! @link
-  trader: Bytes! # trader address
-  price: BigInt! # uint256
-  settlementTime: BigInt! # uint256
-}
-
-type TradeHistory @entity {
-  id: ID! # trade history ID
   market: MarketTrades! @link
   trader: Bytes! # trader address
   price: BigInt! # uint256
@@ -34,4 +25,5 @@ type SettledCohorts @entity(immutable: true) {
   settlementTime: BigInt! # uint256
   winners: BigInt! # uint256
   market: MarketTrades! @link
+  settlementPrice: BigInt # uint256
 }

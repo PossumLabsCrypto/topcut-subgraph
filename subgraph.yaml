@@ -53,7 +53,7 @@ dataSources:
           handler: handlePredictionPosted
         - event: CohortSettled(uint256,uint256,uint256)
           handler: handleCohortSettled
-      file: ./src/top-cut-market.ts
+      file: ./src/market.ts
   - kind: ethereum
     name: TopCutMarket_V1_2
     network: arbitrum-one
@@ -77,7 +77,7 @@ dataSources:
           handler: handlePredictionPosted
         - event: CohortSettled(uint256,uint256,uint256)
           handler: handleCohortSettled
-      file: ./src/top-cut-market.ts
+      file: ./src/market.ts
   - kind: ethereum
     name: TopCutMarket_V1_3
     network: arbitrum-one
@@ -101,7 +101,7 @@ dataSources:
           handler: handlePredictionPosted
         - event: CohortSettled(uint256,uint256,uint256)
           handler: handleCohortSettled
-      file: ./src/top-cut-market.ts
+      file: ./src/market.ts
   - kind: ethereum
     name: TopCutMarket_V1_4
     network: arbitrum-one
@@ -125,7 +125,7 @@ dataSources:
           handler: handlePredictionPosted
         - event: CohortSettled(uint256,uint256,uint256)
           handler: handleCohortSettled
-      file: ./src/top-cut-market.ts
+      file: ./src/market.ts
   - kind: ethereum
     name: TopCutMarket_V2_1
     network: arbitrum-one

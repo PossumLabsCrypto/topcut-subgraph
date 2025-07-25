@@ -27,35 +27,35 @@ const MARKET_CONFIGS = {
   V1: {
     abiName: "TopCutMarket_V1",
     abiFile: "./abis/TopCutMarket_V1.json",
-    handlerFile: "./src/top-cut-market.ts",
+    handlerFile: "./src/market.ts",
     entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
     eventHandlers: [
       {
         event: "PredictionPosted(indexed address,indexed uint256,uint256)",
-        handler: "handlePredictionPosted"
+        handler: "handlePredictionPosted",
       },
       {
         event: "CohortSettled(uint256,uint256,uint256)",
-        handler: "handleCohortSettled"
-      }
-    ]
+        handler: "handleCohortSettled",
+      },
+    ],
   },
   V2: {
-    abiName: "TopCutMarket_V2", 
+    abiName: "TopCutMarket_V2",
     abiFile: "./abis/TopCutMarket_V2.json",
-    handlerFile: "./src/top-cut-market-v2.ts",
+    handlerFile: "./src/market.ts",
     entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
     eventHandlers: [
       {
         event: "PredictionPosted(indexed address,indexed uint256,uint256)",
-        handler: "handlePredictionPosted"
+        handler: "handlePredictionPosted",
       },
       {
         event: "CohortSettled(uint256,uint256,uint256,uint256)",
-        handler: "handleCohortSettled"
-      }
-    ]
-  }
+        handler: "handleCohortSettled",
+      },
+    ],
+  },
   // Add more versions as needed
 };
 

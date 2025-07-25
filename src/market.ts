@@ -1,16 +1,22 @@
-import { BigInt, store } from "@graphprotocol/graph-ts";
-import {
-  CohortSettled as CohortSettledEvent,
-  PredictionPosted as PredictionPostedEvent,
-} from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
-import {
-  MarketTrades,
-  SettledCohorts,
-  Trade,
-  TradeHistory,
-} from "../generated/schema";
+import { store } from "@graphprotocol/graph-ts";
+import { MarketTrades, SettledCohorts, Trade } from "../generated/schema";
 
-export function handlePredictionPosted(event: PredictionPostedEvent): void {
+import {
+  CohortSettled as CohortSettledEvent_V1,
+  PredictionPosted as PredictionPostedEvent_V1,
+} from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
+
+import {
+  CohortSettled as CohortSettledEvent_V2,
+  PredictionPosted as PredictionPostedEvent_V2,
+} from "../generated/TopCutMarket_V2_1/TopCutMarket_V2";
+
+type TPredictionPostedEvent =
+  | PredictionPostedEvent_V1
+  | PredictionPostedEvent_V2;
+type TCohortSettledEvent = CohortSettledEvent_V1 | CohortSettledEvent_V2;
+
+export function handlePredictionPosted(event: TPredictionPostedEvent): void {
   const marketHex = event.address;
   const marketAddress = marketHex ? marketHex : null;
   if (!marketAddress) {
@@ -22,28 +28,22 @@ export function handlePredictionPosted(event: PredictionPostedEvent): void {
   }
 
   const trade = new Trade(event.transaction.hash.toHex());
-  const tradeHistory = new TradeHistory(event.transaction.hash.toHex());
   trade.trader = event.params.user;
-  tradeHistory.trader = event.params.user;
 
   trade.price = event.params.price;
-  tradeHistory.price = event.params.price;
 
   trade.settlementTime = event.params.settlementTime;
-  tradeHistory.settlementTime = event.params.settlementTime;
 
   trade.market = marketAddress;
-  tradeHistory.market = marketAddress;
 
-  tradeHistory.isActive = true;
+  trade.isActive = true;
 
   trade.save();
-  tradeHistory.save();
 
   marketTrades.save();
 }
 
-export function handleCohortSettled(event: CohortSettledEvent): void {
+export function handleCohortSettled(event: TCohortSettledEvent): void {
   const marketHex = event.address;
 
   const marketAddress = marketHex ? marketHex : null;
@@ -61,6 +61,13 @@ export function handleCohortSettled(event: CohortSettledEvent): void {
     newSettledCohort.settlementTime = event.params.settlementTime;
     newSettledCohort.cohortSize = event.params.cohortSize;
     newSettledCohort.winners = event.params.winners;
+    // Explicitly handle settlementPrice
+    if (event instanceof CohortSettledEvent_V2) {
+      newSettledCohort.settlementPrice = event.params.settlementPrice;
+    } else {
+      // V1 events don't have settlementPrice, leave as null
+      newSettledCohort.settlementPrice = null;
+    }
     newSettledCohort.save();
   }
 
@@ -72,16 +79,10 @@ export function handleCohortSettled(event: CohortSettledEvent): void {
     if (!trade) {
       continue; // Skip if trade is null
     }
-    const tradeSettlementTime = trade.settlementTime;
-    let tradeHistory = TradeHistory.load(trade.id);
 
-    if (tradeHistory) {
-      tradeHistory.isActive = false;
-      tradeHistory.save();
-    }
-
-    if (tradeSettlementTime.lt(settlementTime)) {
-      store.remove("Trade", trade.id);
+    if (trade.settlementTime.lt(settlementTime) && trade.isActive) {
+      trade.isActive = false;
+      trade.save();
     }
   }
 
