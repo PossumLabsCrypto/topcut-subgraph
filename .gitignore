@@ -4,3 +4,4 @@ generated/
 .idea/
 data/
 *.env
+*.backup.*
