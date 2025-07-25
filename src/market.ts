@@ -11,11 +11,6 @@ import {
   PredictionPosted as PredictionPostedEvent_V2,
 } from "../generated/TopCutMarket_V2_1/TopCutMarket_V2";
 
-// Remove union types - AssemblyScript doesn't support them
-// type TPredictionPostedEvent = PredictionPostedEvent_V1 | PredictionPostedEvent_V2;
-// type TCohortSettledEvent = CohortSettledEvent_V1 | CohortSettledEvent_V2;
-
-// Overloaded function pattern in exports - AssemblyScript will handle this
 export function handlePredictionPosted_V1(
   event: PredictionPostedEvent_V1
 ): void {
