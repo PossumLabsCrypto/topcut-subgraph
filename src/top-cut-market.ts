@@ -2,7 +2,7 @@ import { BigInt, store } from "@graphprotocol/graph-ts";
 import {
   CohortSettled as CohortSettledEvent,
   PredictionPosted as PredictionPostedEvent,
-} from "../generated/TopCutMarket_V1_1/TopCutMarket_V1_";
+} from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
 import {
   MarketTrades,
   SettledCohorts,
