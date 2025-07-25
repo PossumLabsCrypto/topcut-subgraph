@@ -7,13 +7,57 @@ const path = require("path");
  * Script to automatically add TopCutMarkets to networks.json and subgraph.yaml
  *
  * Usage:
- * 1. Set environment variables with pattern: BTC_TOPCUT_MARKET_<NUMBER>=<ADDRESS>
+ * 1. Set environment variables with pattern: <NETWORK>_TOPCUT_MARKET_V<VERSION>_<NUMBER>=<ADDRESS>
  * 2. Run: node scripts/add-markets.js
  *
+ * Supported patterns:
+ * - BTC_TOPCUT_MARKET_V1_<NUMBER>=<ADDRESS>  (uses TopCutMarket_V1.json ABI)
+ * - BTC_TOPCUT_MARKET_V2_<NUMBER>=<ADDRESS>  (uses TopCutMarket_V2.json ABI)
+ * - ETH_TOPCUT_MARKET_V1_<NUMBER>=<ADDRESS>  (uses TopCutMarket_V1.json ABI)
+ * - etc.
+ *
  * Example env vars:
- * BTC_TOPCUT_MARKET_6=0x1234567890123456789012345678901234567890
- * BTC_TOPCUT_MARKET_7=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
+ * BTC_TOPCUT_MARKET_V1_6=0x1234567890123456789012345678901234567890
+ * BTC_TOPCUT_MARKET_V2_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
+ * ETH_TOPCUT_MARKET_V1_1=0x9876543210987654321098765432109876543210
  */
+
+// Market version configurations
+const MARKET_CONFIGS = {
+  V1: {
+    abiName: "TopCutMarket_V1",
+    abiFile: "./abis/TopCutMarket_V1.json",
+    handlerFile: "./src/top-cut-market.ts",
+    entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
+    eventHandlers: [
+      {
+        event: "PredictionPosted(indexed address,indexed uint256,uint256)",
+        handler: "handlePredictionPosted"
+      },
+      {
+        event: "CohortSettled(uint256,uint256,uint256)",
+        handler: "handleCohortSettled"
+      }
+    ]
+  },
+  V2: {
+    abiName: "TopCutMarket_V2", 
+    abiFile: "./abis/TopCutMarket_V2.json",
+    handlerFile: "./src/top-cut-market-v2.ts",
+    entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
+    eventHandlers: [
+      {
+        event: "PredictionPosted(indexed address,indexed uint256,uint256)",
+        handler: "handlePredictionPosted"
+      },
+      {
+        event: "CohortSettled(uint256,uint256,uint256,uint256)",
+        handler: "handleCohortSettled"
+      }
+    ]
+  }
+  // Add more versions as needed
+};
 
 const NETWORKS_FILE = path.join(__dirname, "..", "networks.json");
 const SUBGRAPH_FILE = path.join(__dirname, "..", "subgraph.yaml");
@@ -23,11 +67,26 @@ const DEFAULT_NETWORK = "arbitrum-one";
 function getMarketEnvVars() {
   const markets = {};
 
-  // Look for environment variables matching BTC_TOPCUT_MARKET_<NUMBER>
+  // Look for environment variables matching patterns:
+  // 1. <NETWORK>_TOPCUT_MARKET_V<VERSION>_<NUMBER> (with network prefix)
+  // 2. TOPCUT_MARKET_V<VERSION>_<NUMBER> (backward compatibility)
   Object.keys(process.env).forEach((key) => {
-    const match = key.match(/^BTC_TOPCUT_MARKET_(\d+)$/);
+    let match, network, version, marketNumber;
+
+    // Try pattern with network prefix first
+    match = key.match(/^([A-Z]+)_TOPCUT_MARKET_V(\d+)_(\d+)$/);
     if (match) {
-      const marketNumber = parseInt(match[1]);
+      [, network, version, marketNumber] = match;
+    } else {
+      // Try pattern without network prefix (backward compatibility)
+      match = key.match(/^TOPCUT_MARKET_V(\d+)_(\d+)$/);
+      if (match) {
+        [, version, marketNumber] = match;
+        network = "BTC"; // Default to BTC for backward compatibility
+      }
+    }
+
+    if (match) {
       const address = process.env[key];
 
       if (!address || !address.match(/^0x[a-fA-F0-9]{40}$/)) {
@@ -35,9 +94,22 @@ function getMarketEnvVars() {
         return;
       }
 
-      markets[marketNumber] = {
-        name: `BTC_TopCutMarket${marketNumber}`,
+      const versionKey = `V${version}`;
+      if (!MARKET_CONFIGS[versionKey]) {
+        console.warn(
+          `Warning: Unsupported market version ${versionKey} for ${key}`
+        );
+        return;
+      }
+
+      const marketKey = `${network}_V${version}_${marketNumber}`;
+      markets[marketKey] = {
+        name: `TopCutMarket_V${version}_${marketNumber}`,
         address: address,
+        network: network,
+        version: versionKey,
+        marketNumber: parseInt(marketNumber),
+        config: MARKET_CONFIGS[versionKey],
       };
     }
   });
@@ -74,30 +146,33 @@ function updateNetworksJson(markets) {
 }
 
 function generateDataSourceYaml(market) {
+  const config = market.config;
+
+  const eventHandlersYaml = config.eventHandlers
+    .map(
+      (eh) => `        - event: ${eh.event}\n          handler: ${eh.handler}`
+    )
+    .join("\n");
+
   return `  - kind: ethereum
     name: ${market.name}
     network: ${DEFAULT_NETWORK}
     source:
       address: "${market.address}"
-      abi: BTC_TopCutMarket
+      abi: ${config.abiName}
       startBlock: ${DEFAULT_START_BLOCK}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - CohortSettled
-        - PendingClaims
-        - PredictionPosted
+        - ${config.entities.join("\n        - ")}
       abis:
-        - name: BTC_TopCutMarket
-          file: ./abis/BTC_TopCutMarket.json
+        - name: ${config.abiName}
+          file: ${config.abiFile}
       eventHandlers:
-        - event: PredictionPosted(indexed address,indexed uint256,uint256)
-          handler: handlePredictionPosted
-        - event: CohortSettled(uint256,uint256,uint256)
-          handler: handleCohortSettled
-      file: ./src/btc-top-cut-market.ts`;
+${eventHandlersYaml}
+      file: ${config.handlerFile}`;
 }
 
 function updateSubgraphYaml(markets) {
@@ -107,18 +182,15 @@ function updateSubgraphYaml(markets) {
 
   // Find existing markets to determine where to insert new ones
   const existingMarkets = [];
-  const marketRegex = /name: (BTC_TopCutMarket\d+)/g;
+  const marketRegex = /name: (TopCutMarket_V\d+_\d+)/g;
   let match;
   while ((match = marketRegex.exec(subgraphContent)) !== null) {
-    const marketNum = parseInt(match[1].replace("BTC_TopCutMarket", ""));
-    existingMarkets.push(marketNum);
+    existingMarkets.push(match[1]);
   }
 
   // Add new markets
-  Object.entries(markets).forEach(([marketNumber, market]) => {
-    const marketNum = parseInt(marketNumber);
-
-    if (existingMarkets.includes(marketNum)) {
+  Object.entries(markets).forEach(([marketKey, market]) => {
+    if (existingMarkets.includes(market.name)) {
       console.log(
         `  - ${market.name} already exists in subgraph.yaml, skipping...`
       );
@@ -155,6 +227,43 @@ function validateFiles() {
   }
 }
 
+function validateMarketConfigs(markets) {
+  const missingFiles = [];
+
+  Object.values(markets).forEach((market) => {
+    const config = market.config;
+    const abiPath = path.join(
+      __dirname,
+      "..",
+      config.abiFile.replace("./", "")
+    );
+    const handlerPath = path.join(
+      __dirname,
+      "..",
+      config.handlerFile.replace("./", "")
+    );
+
+    if (!fs.existsSync(abiPath)) {
+      missingFiles.push(`ABI file: ${config.abiFile} (for ${market.name})`);
+    }
+
+    if (!fs.existsSync(handlerPath)) {
+      console.warn(
+        `⚠️  Handler file not found: ${config.handlerFile} (for ${market.name})`
+      );
+      console.warn("   You may need to create this file manually.");
+    }
+  });
+
+  if (missingFiles.length > 0) {
+    throw new Error(
+      `Missing required files:\n  - ${missingFiles.join(
+        "\n  - "
+      )}\n\nPlease add the required ABI files before running this script.`
+    );
+  }
+}
+
 function main() {
   try {
     console.log("🚀 TopCut Market Addition Script");
@@ -166,21 +275,34 @@ function main() {
 
     if (Object.keys(markets).length === 0) {
       console.log("❌ No market environment variables found!");
-      console.log("\nPlease set environment variables in the format:");
-      console.log("BTC_TOPCUT_MARKET_<NUMBER>=<ADDRESS>");
-      console.log("\nExample:");
+      console.log("\nSupported environment variable formats:");
+      console.log("1. <NETWORK>_TOPCUT_MARKET_V<VERSION>_<NUMBER>=<ADDRESS>");
       console.log(
-        "export BTC_TOPCUT_MARKET_6=0x1234567890123456789012345678901234567890"
+        "2. TOPCUT_MARKET_V<VERSION>_<NUMBER>=<ADDRESS> (defaults to BTC network)"
       );
       console.log(
-        "export BTC_TOPCUT_MARKET_7=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef"
+        "\nSupported versions:",
+        Object.keys(MARKET_CONFIGS).join(", ")
+      );
+      console.log("\nExamples:");
+      console.log(
+        "export BTC_TOPCUT_MARKET_V1_6=0x1234567890123456789012345678901234567890"
+      );
+      console.log(
+        "export TOPCUT_MARKET_V2_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef"
+      );
+      console.log(
+        "export ETH_TOPCUT_MARKET_V1_1=0x9876543210987654321098765432109876543210"
       );
       return;
     }
 
+    // Validate that required files exist for the markets
+    validateMarketConfigs(markets);
+
     console.log(`Found ${Object.keys(markets).length} market(s) to add:`);
     Object.values(markets).forEach((market) => {
-      console.log(`  - ${market.name}: ${market.address}`);
+      console.log(`  - ${market.name} (${market.version}): ${market.address}`);
     });
     console.log("");
 
@@ -209,4 +331,10 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { getMarketEnvVars, updateNetworksJson, updateSubgraphYaml };
+module.exports = {
+  getMarketEnvVars,
+  updateNetworksJson,
+  updateSubgraphYaml,
+  validateMarketConfigs,
+  MARKET_CONFIGS,
+};

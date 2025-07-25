@@ -1,12 +1,27 @@
 # TopCut Market Addition Scripts
 
-This directory contains scripts to automatically add new TopCut markets to your subgraph configuration.
+This directory contains scripts to automatically add new TopCut markets to your subgraph configuration with support for multiple market versions.
 
 ## Files
 
-- `add-markets.js` - Node.js script that updates `networks.json` and `subgraph.yaml`
+- `add-markets.js` - Dynamic Node.js script that supports multiple market versions
+- `add-markets-from-env.js` - Helper script to load markets from .env files
 - `add-markets.sh` - Shell wrapper script with validation and helpful output
+- `market-config-guide.md` - Guide for adding new market versions
 - `README.md` - This documentation
+
+## Supported Market Versions
+
+- **V1**: Uses `TopCutMarket_V1.json` ABI and `top-cut-market.ts` handler
+- **V2**: Uses `TopCutMarket_V2.json` ABI and `top-cut-market-v2.ts` handler
+- More versions can be easily added by updating the `MARKET_CONFIGS` in `add-markets.js`
+
+## Environment Variable Formats
+
+The script supports two environment variable formats:
+
+1. **With Network Prefix**: `<NETWORK>_TOPCUT_MARKET_V<VERSION>_<NUMBER>=<ADDRESS>`
+2. **Simplified Format**: `TOPCUT_MARKET_V<VERSION>_<NUMBER>=<ADDRESS>` (defaults to BTC network)
 
 ## Usage
 
@@ -15,19 +30,28 @@ This directory contains scripts to automatically add new TopCut markets to your 
 1. Set environment variables for each new market:
 
    ```bash
-   export BTC_TOPCUT_MARKET_6=0x1234567890123456789012345678901234567890
-   export BTC_TOPCUT_MARKET_7=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
-   export BTC_TOPCUT_MARKET_8=0x9876543210987654321098765432109876543210
+   # V1 Markets
+   export BTC_TOPCUT_MARKET_V1_6=0x1234567890123456789012345678901234567890
+   export ETH_TOPCUT_MARKET_V1_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
+   
+   # V2 Markets  
+   export BTC_TOPCUT_MARKET_V2_1=0x9876543210987654321098765432109876543210
+   
+   # Simplified format (defaults to BTC network)
+   export TOPCUT_MARKET_V1_7=0x1111111111111111111111111111111111111111
+   export TOPCUT_MARKET_V2_2=0x2222222222222222222222222222222222222222
    ```
 
 2. Run the script:
    ```bash
    ./scripts/add-markets.sh
+   # or directly
+   node scripts/add-markets.js
    ```
 
 ### Method 2: Using a `.env` File
 
-1. Create a file with your market addresses:
+1. Create a `.env` file with your market addresses:
 
    ```bash
    # markets.env
@@ -38,7 +62,23 @@ This directory contains scripts to automatically add new TopCut markets to your 
 
 2. Source the file and run the script:
    ```bash
-   source markets.env
+   ```bash
+   # scripts/.env or scripts/markets.env
+   TOPCUT_MARKET_V1_1=0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1
+   TOPCUT_MARKET_V1_2=0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5
+   TOPCUT_MARKET_V2_1=0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586
+   ```
+
+2. Run the helper script:
+   ```bash
+   # Load from scripts/.env (default)
+   node scripts/add-markets-from-env.js
+   
+   # Load from custom path
+   node scripts/add-markets-from-env.js path/to/your/markets.env
+   
+   # Or use the shell wrapper
+   source scripts/.env
    ./scripts/add-markets.sh
    ```
 
@@ -53,7 +93,8 @@ node scripts/add-markets.js
 ## What the Scripts Do
 
 1. **Validates** your environment variables and addresses
-2. **Creates backup files** of `networks.json` and `subgraph.yaml` with timestamps
+2. **Validates** that required ABI files exist for each market version
+3. **Creates backup files** of `networks.json` and `subgraph.yaml` with timestamps
 3. **Updates `networks.json`** with the new market addresses
 4. **Updates `subgraph.yaml`** with new data source definitions
 5. **Provides next steps** for codegen, build, and deploy
@@ -89,8 +130,8 @@ The scripts use these default values (you can modify them in `add-markets.js`):
 
 - **Network**: `arbitrum-one`
 - **Start Block**: `348072019`
-- **ABI File**: `./abis/BTC_TopCutMarket.json`
-- **Handler File**: `./src/btc-top-cut-market.ts`
+- **ABI File**: `./abis/TopCutMarket_V1.json`
+- **Handler File**: `./src/top-cut-market.ts`
 
 ## Safety Features
 
