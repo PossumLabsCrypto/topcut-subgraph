@@ -6,6 +6,21 @@
     },
     "TopCutNFT": {
       "address": "0xFbEc13381B63E811538F63177CfD2B5FF925e88b"
+    },
+    "TopCutMarket_V1_1": {
+      "address": "0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1"
+    },
+    "TopCutMarket_V1_2": {
+      "address": "0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5"
+    },
+    "TopCutMarket_V1_3": {
+      "address": "0xB8eC8622D8B7924337CA7B143683459fE5a13f79"
+    },
+    "TopCutMarket_V1_4": {
+      "address": "0xE8B9a818D57E2413E05144311E2d4d190c3f711c"
+    },
+    "TopCutMarket_V2_1": {
+      "address": "0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586"
     }
   }
 }
