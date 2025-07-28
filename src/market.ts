@@ -4,34 +4,40 @@ import { MarketTrades, SettledCohorts, Trade } from "../generated/schema";
 import {
   CohortSettled as CohortSettledEvent_V1,
   PredictionPosted as PredictionPostedEvent_V1,
+  TopCutMarket_V1,
 } from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
 
 import {
   CohortSettled as CohortSettledEvent_V2,
   PredictionPosted as PredictionPostedEvent_V2,
+  TopCutMarket_V2,
 } from "../generated/TopCutMarket_V2_1/TopCutMarket_V2";
 
 export function handlePredictionPosted_V1(
   event: PredictionPostedEvent_V1
 ): void {
+  let marketContract = TopCutMarket_V1.bind(event.address);
+  let tradeDuration = marketContract.TRADE_DURATION();
   handlePredictionPostedCommon(
     event.address,
     event.transaction.hash,
     event.params.user,
     event.params.price,
-    event.params.settlementTime
+    event.params.settlementTime.plus(tradeDuration)
   );
 }
 
 export function handlePredictionPosted_V2(
   event: PredictionPostedEvent_V2
 ): void {
+  let marketContract = TopCutMarket_V2.bind(event.address);
+  let tradeDuration = marketContract.TRADE_DURATION();
   handlePredictionPostedCommon(
     event.address,
     event.transaction.hash,
     event.params.user,
     event.params.price,
-    event.params.settlementTime
+    event.params.settlementTime.plus(tradeDuration)
   );
 }
 
@@ -103,6 +109,11 @@ function handleCohortSettledCommon(
   if (!marketTrades) {
     return;
   }
+  if (cohortSize.isZero() && winners.isZero()) {
+    // If cohortSize and winners are zero, we can skip creating a SettledCohort
+    // This is useful for cases where the cohort is settled without any winners and the first settled Cohort which is empty by default.
+    return;
+  }
 
   const newSettledCohort = new SettledCohorts(txHash.toHex());
   newSettledCohort.market = marketAddress;
@@ -120,7 +131,7 @@ function handleCohortSettledCommon(
       continue;
     }
 
-    if (trade.settlementTime.lt(settlementTime) && trade.isActive) {
+    if (trade.settlementTime.le(settlementTime) && trade.isActive) {
       trade.isActive = false;
       trade.save();
     }

@@ -67,5 +67,12 @@
     ],
     "name": "PrizesClaimed",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "TRADE_DURATION",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
   }
 ]
