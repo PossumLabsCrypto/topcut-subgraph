@@ -41,6 +41,27 @@ export function handlePredictionPosted_V2(
   );
 }
 
+// *************************************************
+// ***************************************
+// *****************************
+// NOTE: In Future updates, PredictionPosted_V1 and PredictionPosted_V2 might come with the correct settlementTime. The common function should always work as intended.
+
+// export function handlePredictionPosted_V3(
+//   event: PredictionPostedEvent_V#
+// ): void {
+//   handlePredictionPostedCommon(
+//     event.address,
+//     event.transaction.hash,
+//     event.params.user,
+//     event.params.price,
+//     event.params.settlementTime // Assuming V3 has the correct settlementTime
+//   );
+// }
+
+// *****************************
+// ***************************************
+// *************************************************
+
 export function handleCohortSettled_V1(event: CohortSettledEvent_V1): void {
   handleCohortSettledCommon(
     event.address,
@@ -62,6 +83,8 @@ export function handleCohortSettled_V2(event: CohortSettledEvent_V2): void {
     event.params.settlementPrice // V2 has settlementPrice
   );
 }
+
+
 
 // Common implementation functions
 function handlePredictionPostedCommon(
