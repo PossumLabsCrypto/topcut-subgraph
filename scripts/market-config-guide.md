@@ -34,7 +34,7 @@ const MARKET_CONFIGS = {
     abiName: "TopCutMarket_V2",
     abiFile: "./abis/TopCutMarket_V2.json",
     handlerFile: "./src/market.ts",
-    entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
+    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
     eventHandlers: [
       {
         event: "PredictionPosted(indexed address,indexed uint256,uint256)",

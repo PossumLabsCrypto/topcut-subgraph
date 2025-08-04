@@ -28,7 +28,7 @@ const MARKET_CONFIGS = {
     abiName: "TopCutMarket_V1",
     abiFile: "./abis/TopCutMarket_V1.json",
     handlerFile: "./src/market.ts",
-    entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
+    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
     eventHandlers: [
       {
         event: "PredictionPosted(indexed address,indexed uint256,uint256)",
@@ -44,7 +44,7 @@ const MARKET_CONFIGS = {
     abiName: "TopCutMarket_V2",
     abiFile: "./abis/TopCutMarket_V2.json",
     handlerFile: "./src/market.ts",
-    entities: ["CohortSettled", "PendingClaims", "PredictionPosted"],
+    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
     eventHandlers: [
       {
         event: "PredictionPosted(indexed address,indexed uint256,uint256)",
@@ -53,6 +53,22 @@ const MARKET_CONFIGS = {
       {
         event: "CohortSettled(uint256,uint256,uint256,uint256)",
         handler: "handleCohortSettled_V2",
+      },
+    ],
+  },
+  V3: {
+    abiName: "TopCutMarket_V3",
+    abiFile: "./abis/TopCutMarket_V3.json",
+    handlerFile: "./src/market.ts",
+    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
+    eventHandlers: [
+      {
+        event: "PredictionPosted(indexed address,indexed uint256,uint256)",
+        handler: "handlePredictionPosted_V3",
+      },
+      {
+        event: "CohortSettled(uint256,uint256,uint256,uint256)",
+        handler: "handleCohortSettled_V3",
       },
     ],
   },

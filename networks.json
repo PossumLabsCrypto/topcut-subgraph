@@ -21,6 +21,9 @@
     },
     "TopCutMarket_V2_1": {
       "address": "0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586"
+    },
+    "TopCutMarket_V3_1": {
+      "address": "0xe6f44D70B36c45Fa3095E3E04E0480135630E089"
     }
   }
 }

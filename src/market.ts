@@ -12,6 +12,10 @@ import {
   PredictionPosted as PredictionPostedEvent_V2,
   TopCutMarket_V2,
 } from "../generated/TopCutMarket_V2_1/TopCutMarket_V2";
+import {
+  CohortSettled as CohortSettledEvent_V3,
+  PredictionPosted as PredictionPostedEvent_V3,
+} from "../generated/TopCutMarket_V3_1/TopCutMarket_V3";
 
 export function handlePredictionPosted_V1(
   event: PredictionPostedEvent_V1
@@ -38,6 +42,17 @@ export function handlePredictionPosted_V2(
     event.params.user,
     event.params.price,
     event.params.settlementTime.plus(tradeDuration)
+  );
+}
+export function handlePredictionPosted_V3(
+  event: PredictionPostedEvent_V3
+): void {
+  handlePredictionPostedCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.user,
+    event.params.price,
+    event.params.settlementTime
   );
 }
 
@@ -84,7 +99,16 @@ export function handleCohortSettled_V2(event: CohortSettledEvent_V2): void {
   );
 }
 
-
+export function handleCohortSettled_V3(event: CohortSettledEvent_V3): void {
+  handleCohortSettledCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.settlementTime,
+    event.params.cohortSize,
+    event.params.winners,
+    event.params.settlementPrice // V3 has settlementPrice
+  );
+}
 
 // Common implementation functions
 function handlePredictionPostedCommon(

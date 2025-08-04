@@ -43,7 +43,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - CohortSettled
-        - PendingClaims
+        - PrizesClaimed
         - PredictionPosted
       abis:
         - name: TopCutMarket_V1
@@ -67,7 +67,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - CohortSettled
-        - PendingClaims
+        - PrizesClaimed
         - PredictionPosted
       abis:
         - name: TopCutMarket_V1
@@ -91,7 +91,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - CohortSettled
-        - PendingClaims
+        - PrizesClaimed
         - PredictionPosted
       abis:
         - name: TopCutMarket_V1
@@ -115,7 +115,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - CohortSettled
-        - PendingClaims
+        - PrizesClaimed
         - PredictionPosted
       abis:
         - name: TopCutMarket_V1
@@ -139,7 +139,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - CohortSettled
-        - PendingClaims
+        - PrizesClaimed
         - PredictionPosted
       abis:
         - name: TopCutMarket_V2
@@ -149,4 +149,28 @@ dataSources:
           handler: handlePredictionPosted_V2
         - event: CohortSettled(uint256,uint256,uint256,uint256)
           handler: handleCohortSettled_V2
+      file: ./src/market.ts
+  - kind: ethereum
+    name: TopCutMarket_V3_1
+    network: arbitrum-one
+    source:
+      address: "0xe6f44D70B36c45Fa3095E3E04E0480135630E089"
+      abi: TopCutMarket_V3
+      startBlock: 348072019
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: TopCutMarket_V3
+          file: ./abis/TopCutMarket_V3.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted_V3
+        - event: CohortSettled(uint256,uint256,uint256,uint256)
+          handler: handleCohortSettled_V3
       file: ./src/market.ts
