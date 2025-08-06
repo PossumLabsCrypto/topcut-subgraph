@@ -7,23 +7,23 @@
     "TopCutNFT": {
       "address": "0xFbEc13381B63E811538F63177CfD2B5FF925e88b"
     },
-    "TopCutMarket_V1_1": {
-      "address": "0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1"
+    "TopCutMarket_V1_3": {
+      "address": "0x8c48c844ee0c630829f1aa21559ec6968bd4ca14"
     },
     "TopCutMarket_V1_2": {
       "address": "0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5"
     },
-    "TopCutMarket_V1_3": {
-      "address": "0xB8eC8622D8B7924337CA7B143683459fE5a13f79"
+    "TopCutMarket_V1_1": {
+      "address": "0x6B68BbF0492fe5c57B2Aff348B9903DB0Ba5fAa7"
+    },
+    "TopCutMarket_V1_5": {
+      "address": "0xe6f44D70B36c45Fa3095E3E04E0480135630E089"
     },
     "TopCutMarket_V1_4": {
-      "address": "0xE8B9a818D57E2413E05144311E2d4d190c3f711c"
+      "address": "0x6Af65424256E841Ad1bB870207E261496540cE62"
     },
-    "TopCutMarket_V2_1": {
+    "TopCutMarket_V0_1": {
       "address": "0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586"
-    },
-    "TopCutMarket_V3_1": {
-      "address": "0xe6f44D70B36c45Fa3095E3E04E0480135630E089"
     }
   }
 }

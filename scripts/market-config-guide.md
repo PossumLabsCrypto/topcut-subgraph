@@ -9,7 +9,7 @@ This guide explains how to add new market versions to the dynamic add-markets sc
 First, add your new ABI file to the `abis/` directory:
 
 ```
-abis/TopCutMarket_V2.json  # Example for V2
+abis/TopCutMarket_V0.json  # Example for V0
 ```
 
 ### 2. Create Handler File (Optional)
@@ -17,7 +17,7 @@ abis/TopCutMarket_V2.json  # Example for V2
 Create a new handler file if needed:
 
 ```
-src/market.ts  # Example for V2
+src/market.ts  # Example for V0
 ```
 
 ### 3. Update Market Configuration
@@ -29,10 +29,10 @@ const MARKET_CONFIGS = {
   V1: {
     // ... existing V1 config
   },
-  V2: {
+  V0: {
     // Add your new version here
-    abiName: "TopCutMarket_V2",
-    abiFile: "./abis/TopCutMarket_V2.json",
+    abiName: "TopCutMarket_V0",
+    abiFile: "./abis/TopCutMarket_V0.json",
     handlerFile: "./src/market.ts",
     entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
     eventHandlers: [
@@ -56,8 +56,8 @@ const MARKET_CONFIGS = {
 Use the new version in your environment variables:
 
 ```bash
-export BTC_TOPCUT_MARKET_V2_1=0x1234567890123456789012345678901234567890
-export ETH_TOPCUT_MARKET_V2_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
+export BTC_TOPCUT_MARKET_V0_1=0x1234567890123456789012345678901234567890
+export ETH_TOPCUT_MARKET_V0_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
 ```
 
 ### 5. Run the Script
@@ -77,7 +77,7 @@ The script supports environment variables with this pattern:
 Examples:
 
 - `BTC_TOPCUT_MARKET_V1_6` - Bitcoin market, version 1, instance 6
-- `ETH_TOPCUT_MARKET_V2_1` - Ethereum market, version 2, instance 1
+- `ETH_TOPCUT_MARKET_V0_1` - Ethereum market, version 2, instance 1
 - `MATIC_TOPCUT_MARKET_V1_3` - Polygon market, version 1, instance 3
 
 ## Configuration Properties

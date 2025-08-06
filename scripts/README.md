@@ -13,7 +13,7 @@ This directory contains scripts to automatically add new TopCut markets to your 
 ## Supported Market Versions
 
 - **V1**: Uses `TopCutMarket_V1.json` ABI and `market.ts` handler
-- **V2**: Uses `TopCutMarket_V2.json` ABI and `top-cut-market-v2.ts` handler
+- **V0**: Uses `TopCutMarket_V0.json` ABI and `top-cut-market-V0.ts` handler
 - More versions can be easily added by updating the `MARKET_CONFIGS` in `add-markets.js`
 
 ## Environment Variable Formats
@@ -34,12 +34,12 @@ The script supports two environment variable formats:
    export BTC_TOPCUT_MARKET_V1_6=0x1234567890123456789012345678901234567890
    export ETH_TOPCUT_MARKET_V1_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
    
-   # V2 Markets  
-   export BTC_TOPCUT_MARKET_V2_1=0x9876543210987654321098765432109876543210
+   # V0 Markets  
+   export BTC_TOPCUT_MARKET_V0_1=0x9876543210987654321098765432109876543210
    
    # Simplified format (defaults to BTC network)
    export TOPCUT_MARKET_V1_7=0x1111111111111111111111111111111111111111
-   export TOPCUT_MARKET_V2_2=0x2222222222222222222222222222222222222222
+   export TOPCUT_MARKET_V0_2=0x2222222222222222222222222222222222222222
    ```
 
 2. Run the script:
@@ -66,7 +66,7 @@ The script supports two environment variable formats:
    # scripts/.env or scripts/markets.env
    TOPCUT_MARKET_V1_1=0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1
    TOPCUT_MARKET_V1_2=0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5
-   TOPCUT_MARKET_V2_1=0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586
+   TOPCUT_MARKET_V0_1=0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586
    ```
 
 2. Run the helper script:

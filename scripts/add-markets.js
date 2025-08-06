@@ -12,18 +12,34 @@ const path = require("path");
  *
  * Supported patterns:
  * - BTC_TOPCUT_MARKET_V1_<NUMBER>=<ADDRESS>  (uses TopCutMarket_V1.json ABI)
- * - BTC_TOPCUT_MARKET_V2_<NUMBER>=<ADDRESS>  (uses TopCutMarket_V2.json ABI)
+ * - BTC_TOPCUT_MARKET_V0_<NUMBER>=<ADDRESS>  (uses TopCutMarket_V0.json ABI)
  * - ETH_TOPCUT_MARKET_V1_<NUMBER>=<ADDRESS>  (uses TopCutMarket_V1.json ABI)
  * - etc.
  *
  * Example env vars:
  * BTC_TOPCUT_MARKET_V1_6=0x1234567890123456789012345678901234567890
- * BTC_TOPCUT_MARKET_V2_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
+ * BTC_TOPCUT_MARKET_V0_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
  * ETH_TOPCUT_MARKET_V1_1=0x9876543210987654321098765432109876543210
  */
 
 // Market version configurations
 const MARKET_CONFIGS = {
+  V0: {
+    abiName: "TopCutMarket_V0",
+    abiFile: "./abis/TopCutMarket_V0.json",
+    handlerFile: "./src/market.ts",
+    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
+    eventHandlers: [
+      {
+        event: "PredictionPosted(indexed address,indexed uint256,uint256)",
+        handler: "handlePredictionPosted_V0",
+      },
+      {
+        event: "CohortSettled(uint256,uint256,uint256,uint256)",
+        handler: "handleCohortSettled_V0",
+      },
+    ],
+  },
   V1: {
     abiName: "TopCutMarket_V1",
     abiFile: "./abis/TopCutMarket_V1.json",
@@ -35,40 +51,8 @@ const MARKET_CONFIGS = {
         handler: "handlePredictionPosted_V1",
       },
       {
-        event: "CohortSettled(uint256,uint256,uint256)",
+        event: "CohortSettled(uint256,uint256,uint256,uint256)",
         handler: "handleCohortSettled_V1",
-      },
-    ],
-  },
-  V2: {
-    abiName: "TopCutMarket_V2",
-    abiFile: "./abis/TopCutMarket_V2.json",
-    handlerFile: "./src/market.ts",
-    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
-    eventHandlers: [
-      {
-        event: "PredictionPosted(indexed address,indexed uint256,uint256)",
-        handler: "handlePredictionPosted_V2",
-      },
-      {
-        event: "CohortSettled(uint256,uint256,uint256,uint256)",
-        handler: "handleCohortSettled_V2",
-      },
-    ],
-  },
-  V3: {
-    abiName: "TopCutMarket_V3",
-    abiFile: "./abis/TopCutMarket_V3.json",
-    handlerFile: "./src/market.ts",
-    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
-    eventHandlers: [
-      {
-        event: "PredictionPosted(indexed address,indexed uint256,uint256)",
-        handler: "handlePredictionPosted_V3",
-      },
-      {
-        event: "CohortSettled(uint256,uint256,uint256,uint256)",
-        handler: "handleCohortSettled_V3",
       },
     ],
   },
@@ -305,7 +289,7 @@ function main() {
         "export BTC_TOPCUT_MARKET_V1_6=0x1234567890123456789012345678901234567890"
       );
       console.log(
-        "export TOPCUT_MARKET_V2_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef"
+        "export TOPCUT_MARKET_V0_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef"
       );
       console.log(
         "export ETH_TOPCUT_MARKET_V1_1=0x9876543210987654321098765432109876543210"

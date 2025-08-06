@@ -8,44 +8,26 @@ import {
 } from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
 
 import {
-  CohortSettled as CohortSettledEvent_V2,
-  PredictionPosted as PredictionPostedEvent_V2,
-  TopCutMarket_V2,
-} from "../generated/TopCutMarket_V2_1/TopCutMarket_V2";
-import {
-  CohortSettled as CohortSettledEvent_V3,
-  PredictionPosted as PredictionPostedEvent_V3,
-} from "../generated/TopCutMarket_V3_1/TopCutMarket_V3";
+  CohortSettled as CohortSettledEvent_V0,
+  PredictionPosted as PredictionPostedEvent_V0,
+  TopCutMarket_V0,
+} from "../generated/TopCutMarket_V0_1/TopCutMarket_V0";
 
+export function handlePredictionPosted_V0(
+  event: PredictionPostedEvent_V0
+): void {
+  let marketContract = TopCutMarket_V0.bind(event.address);
+  let tradeDuration = marketContract.TRADE_DURATION();
+  handlePredictionPostedCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.user,
+    event.params.price,
+    event.params.settlementTime.plus(tradeDuration) // Adjust settlement time by trade duration
+  );
+}
 export function handlePredictionPosted_V1(
   event: PredictionPostedEvent_V1
-): void {
-  let marketContract = TopCutMarket_V1.bind(event.address);
-  let tradeDuration = marketContract.TRADE_DURATION();
-  handlePredictionPostedCommon(
-    event.address,
-    event.transaction.hash,
-    event.params.user,
-    event.params.price,
-    event.params.settlementTime.plus(tradeDuration)
-  );
-}
-
-export function handlePredictionPosted_V2(
-  event: PredictionPostedEvent_V2
-): void {
-  let marketContract = TopCutMarket_V2.bind(event.address);
-  let tradeDuration = marketContract.TRADE_DURATION();
-  handlePredictionPostedCommon(
-    event.address,
-    event.transaction.hash,
-    event.params.user,
-    event.params.price,
-    event.params.settlementTime.plus(tradeDuration)
-  );
-}
-export function handlePredictionPosted_V3(
-  event: PredictionPostedEvent_V3
 ): void {
   handlePredictionPostedCommon(
     event.address,
@@ -56,50 +38,18 @@ export function handlePredictionPosted_V3(
   );
 }
 
-// *************************************************
-// ***************************************
-// *****************************
-// NOTE: In Future updates, PredictionPosted_V1 and PredictionPosted_V2 might come with the correct settlementTime. The common function should always work as intended.
-
-// export function handlePredictionPosted_V3(
-//   event: PredictionPostedEvent_V#
-// ): void {
-//   handlePredictionPostedCommon(
-//     event.address,
-//     event.transaction.hash,
-//     event.params.user,
-//     event.params.price,
-//     event.params.settlementTime // Assuming V3 has the correct settlementTime
-//   );
-// }
-
-// *****************************
-// ***************************************
-// *************************************************
+export function handleCohortSettled_V0(event: CohortSettledEvent_V0): void {
+  handleCohortSettledCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.settlementTime,
+    event.params.cohortSize,
+    event.params.winners,
+    event.params.settlementPrice // V0 has settlementPrice
+  );
+}
 
 export function handleCohortSettled_V1(event: CohortSettledEvent_V1): void {
-  handleCohortSettledCommon(
-    event.address,
-    event.transaction.hash,
-    event.params.settlementTime,
-    event.params.cohortSize,
-    event.params.winners,
-    null // V1 doesn't have settlementPrice
-  );
-}
-
-export function handleCohortSettled_V2(event: CohortSettledEvent_V2): void {
-  handleCohortSettledCommon(
-    event.address,
-    event.transaction.hash,
-    event.params.settlementTime,
-    event.params.cohortSize,
-    event.params.winners,
-    event.params.settlementPrice // V2 has settlementPrice
-  );
-}
-
-export function handleCohortSettled_V3(event: CohortSettledEvent_V3): void {
   handleCohortSettledCommon(
     event.address,
     event.transaction.hash,
