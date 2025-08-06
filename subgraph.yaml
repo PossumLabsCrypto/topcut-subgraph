@@ -150,27 +150,3 @@ dataSources:
         - event: CohortSettled(uint256,uint256,uint256,uint256)
           handler: handleCohortSettled_V1
       file: ./src/market.ts
-  - kind: ethereum
-    name: TopCutMarket_V0_1
-    network: arbitrum-one
-    source:
-      address: "0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586"
-      abi: TopCutMarket_V0
-      startBlock: 348072019
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - CohortSettled
-        - PrizesClaimed
-        - PredictionPosted
-      abis:
-        - name: TopCutMarket_V0
-          file: ./abis/TopCutMarket_V0.json
-      eventHandlers:
-        - event: PredictionPosted(indexed address,indexed uint256,uint256)
-          handler: handlePredictionPosted_V0
-        - event: CohortSettled(uint256,uint256,uint256,uint256)
-          handler: handleCohortSettled_V0
-      file: ./src/market.ts

@@ -24,22 +24,6 @@ const path = require("path");
 
 // Market version configurations
 const MARKET_CONFIGS = {
-  V0: {
-    abiName: "TopCutMarket_V0",
-    abiFile: "./abis/TopCutMarket_V0.json",
-    handlerFile: "./src/market.ts",
-    entities: ["CohortSettled", "PrizesClaimed", "PredictionPosted"],
-    eventHandlers: [
-      {
-        event: "PredictionPosted(indexed address,indexed uint256,uint256)",
-        handler: "handlePredictionPosted_V0",
-      },
-      {
-        event: "CohortSettled(uint256,uint256,uint256,uint256)",
-        handler: "handleCohortSettled_V0",
-      },
-    ],
-  },
   V1: {
     abiName: "TopCutMarket_V1",
     abiFile: "./abis/TopCutMarket_V1.json",

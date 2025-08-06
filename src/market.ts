@@ -4,28 +4,8 @@ import { MarketTrades, SettledCohorts, Trade } from "../generated/schema";
 import {
   CohortSettled as CohortSettledEvent_V1,
   PredictionPosted as PredictionPostedEvent_V1,
-  TopCutMarket_V1,
 } from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
 
-import {
-  CohortSettled as CohortSettledEvent_V0,
-  PredictionPosted as PredictionPostedEvent_V0,
-  TopCutMarket_V0,
-} from "../generated/TopCutMarket_V0_1/TopCutMarket_V0";
-
-export function handlePredictionPosted_V0(
-  event: PredictionPostedEvent_V0
-): void {
-  let marketContract = TopCutMarket_V0.bind(event.address);
-  let tradeDuration = marketContract.TRADE_DURATION();
-  handlePredictionPostedCommon(
-    event.address,
-    event.transaction.hash,
-    event.params.user,
-    event.params.price,
-    event.params.settlementTime.plus(tradeDuration) // Adjust settlement time by trade duration
-  );
-}
 export function handlePredictionPosted_V1(
   event: PredictionPostedEvent_V1
 ): void {
@@ -38,16 +18,6 @@ export function handlePredictionPosted_V1(
   );
 }
 
-export function handleCohortSettled_V0(event: CohortSettledEvent_V0): void {
-  handleCohortSettledCommon(
-    event.address,
-    event.transaction.hash,
-    event.params.settlementTime,
-    event.params.cohortSize,
-    event.params.winners,
-    event.params.settlementPrice // V0 has settlementPrice
-  );
-}
 
 export function handleCohortSettled_V1(event: CohortSettledEvent_V1): void {
   handleCohortSettledCommon(
