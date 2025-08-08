@@ -58,7 +58,7 @@ dataSources:
     name: TopCutMarket_V1_2
     network: arbitrum-one
     source:
-      address: "0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5"
+      address: "0xdFDab494A0E8d5Be32116Ec8e0E0e1513F302089"
       abi: TopCutMarket_V1
       startBlock: 348072019
     mapping:

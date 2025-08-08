@@ -65,7 +65,7 @@ The script supports two environment variable formats:
    ```bash
    # scripts/.env or scripts/markets.env
    TOPCUT_MARKET_V1_1=0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1
-   TOPCUT_MARKET_V1_2=0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5
+   TOPCUT_MARKET_V1_2=0xdFDab494A0E8d5Be32116Ec8e0E0e1513F302089
    TOPCUT_MARKET_V0_1=0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586
    ```
 
