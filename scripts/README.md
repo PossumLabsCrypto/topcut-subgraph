@@ -33,10 +33,10 @@ The script supports two environment variable formats:
    # V1 Markets
    export BTC_TOPCUT_MARKET_V1_6=0x1234567890123456789012345678901234567890
    export ETH_TOPCUT_MARKET_V1_1=0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef
-   
-   # V0 Markets  
+
+   # V0 Markets
    export BTC_TOPCUT_MARKET_V0_1=0x9876543210987654321098765432109876543210
-   
+
    # Simplified format (defaults to BTC network)
    export TOPCUT_MARKET_V1_7=0x1111111111111111111111111111111111111111
    export TOPCUT_MARKET_V0_2=0x2222222222222222222222222222222222222222
@@ -61,22 +61,24 @@ The script supports two environment variable formats:
    ```
 
 2. Source the file and run the script:
-   ```bash
+
+   ````bash
    ```bash
    # scripts/.env or scripts/markets.env
    TOPCUT_MARKET_V1_1=0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1
    TOPCUT_MARKET_V1_2=0xdFDab494A0E8d5Be32116Ec8e0E0e1513F302089
    TOPCUT_MARKET_V0_1=0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586
-   ```
+   ````
 
-2. Run the helper script:
+3. Run the helper script:
+
    ```bash
    # Load from scripts/.env (default)
    node scripts/add-markets-from-env.js
-   
+
    # Load from custom path
    node scripts/add-markets-from-env.js path/to/your/markets.env
-   
+
    # Or use the shell wrapper
    source scripts/.env
    ./scripts/add-markets.sh
@@ -95,9 +97,9 @@ node scripts/add-markets.js
 1. **Validates** your environment variables and addresses
 2. **Validates** that required ABI files exist for each market version
 3. **Creates backup files** of `networks.json` and `subgraph.yaml` with timestamps
-3. **Updates `networks.json`** with the new market addresses
-4. **Updates `subgraph.yaml`** with new data source definitions
-5. **Provides next steps** for codegen, build, and deploy
+4. **Updates `networks.json`** with the new market addresses
+5. **Updates `subgraph.yaml`** with new data source definitions
+6. **Provides next steps** for codegen, build, and deploy
 
 ## Environment Variable Format
 
@@ -129,7 +131,7 @@ export BTC_TOPCUT_MARKET_15=0x2222222222222222222222222222222222222222
 The scripts use these default values (you can modify them in `add-markets.js`):
 
 - **Network**: `arbitrum-one`
-- **Start Block**: `348072019`
+- **Start Block**: `363495560`
 - **ABI File**: `./abis/TopCutMarket_V1.json`
 - **Handler File**: `./src/market.ts`
 
@@ -196,7 +198,7 @@ Make sure your addresses:
 You can modify the script constants in `add-markets.js`:
 
 ```javascript
-const DEFAULT_START_BLOCK = 348072019; // Change start block
+const DEFAULT_START_BLOCK = 363495560; // Change start block
 const DEFAULT_NETWORK = "arbitrum-one"; // Change network
 ```
 

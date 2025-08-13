@@ -8,19 +8,13 @@
       "address": "0xFbEc13381B63E811538F63177CfD2B5FF925e88b"
     },
     "TopCutMarket_V1_3": {
-      "address": "0x8c48c844ee0c630829f1aa21559ec6968bd4ca14"
+      "address": "0xe6f44D70B36c45Fa3095E3E04E0480135630E089"
     },
     "TopCutMarket_V1_2": {
       "address": "0xdFDab494A0E8d5Be32116Ec8e0E0e1513F302089"
     },
     "TopCutMarket_V1_1": {
       "address": "0x6B68BbF0492fe5c57B2Aff348B9903DB0Ba5fAa7"
-    },
-    "TopCutMarket_V1_5": {
-      "address": "0xe6f44D70B36c45Fa3095E3E04E0480135630E089"
-    },
-    "TopCutMarket_V1_4": {
-      "address": "0x6Af65424256E841Ad1bB870207E261496540cE62"
     }
   }
 }

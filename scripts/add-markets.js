@@ -38,6 +38,10 @@ const MARKET_CONFIGS = {
         event: "CohortSettled(uint256,uint256,uint256,uint256)",
         handler: "handleCohortSettled_V1",
       },
+      {
+        event: "PrizesClaimed(indexed address,uint256)",
+        handler: "handlePrizesClaimed",
+      },
     ],
   },
   // Add more versions as needed
@@ -45,7 +49,7 @@ const MARKET_CONFIGS = {
 
 const NETWORKS_FILE = path.join(__dirname, "..", "networks.json");
 const SUBGRAPH_FILE = path.join(__dirname, "..", "subgraph.yaml");
-const DEFAULT_START_BLOCK = 348072019;
+const DEFAULT_START_BLOCK = 363495560;
 const DEFAULT_NETWORK = "arbitrum-one";
 
 function getMarketEnvVars() {

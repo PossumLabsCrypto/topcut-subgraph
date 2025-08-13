@@ -1,0 +1,32 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: TopCutVault
+    network: arbitrum-one
+    source:
+      address: "0x3cfc3CBA1B4aAF969057F590D23efe46848F4270"
+      abi: TopCutVault
+      startBlock: 348072019
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AffiliatePointsUpdated
+        - AffiliateRewardsClaimed
+        - LoyaltyPointsUpdated
+        - LoyaltyRewardDistributed
+        - RedeemedPSM
+      abis:
+        - name: TopCutVault
+          file: ./abis/TopCutVault.json
+      eventHandlers:
+        - event: LoyaltyPointsUpdated(indexed address,uint256)
+          handler: handleLoyaltyPointsUpdated
+        - event: LoyaltyRewardDistributed(indexed address,uint256)
+          handler: handleLoyaltyRewardDistributed
+      file: ./src/top-cut-vault.ts

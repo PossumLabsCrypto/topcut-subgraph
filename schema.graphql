@@ -27,3 +27,14 @@ type SettledCohorts @entity(immutable: true) {
   market: MarketTrades! @link
   settlementPrice: BigInt # uint256
 }
+
+type UserPaidAndClaimed @entity {
+  id: Bytes! # trader address
+  claimed: BigInt! # uint256
+  paid: BigInt! # uint256
+}
+
+type MarketTradeSize @entity {
+  id: Bytes! # market address
+  tradeSize: BigInt! # uint256
+}

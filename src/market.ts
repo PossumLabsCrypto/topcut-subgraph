@@ -1,10 +1,33 @@
 import { Address, BigInt, Bytes, store } from "@graphprotocol/graph-ts";
-import { MarketTrades, SettledCohorts, Trade } from "../generated/schema";
+import {
+  MarketTrades,
+  MarketTradeSize,
+  SettledCohorts,
+  Trade,
+  UserPaidAndClaimed,
+} from "../generated/schema";
 
 import {
   CohortSettled as CohortSettledEvent_V1,
   PredictionPosted as PredictionPostedEvent_V1,
+  PrizesClaimed as PrizeClaimedEvent,
+  TopCutMarket_V1,
 } from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
+
+export function handlePrizesClaimed(event: PrizeClaimedEvent): void {
+  const trader = event.params.user;
+  const claimAmount = event.params.claimedAmount;
+
+  let userClaims = UserPaidAndClaimed.load(trader);
+  if (!userClaims) {
+    userClaims = new UserPaidAndClaimed(trader);
+    userClaims.claimed = BigInt.fromI32(0);
+    userClaims.paid = BigInt.fromI32(0);
+  }
+
+  userClaims.claimed = userClaims.claimed.plus(claimAmount);
+  userClaims.save();
+}
 
 export function handlePredictionPosted_V1(
   event: PredictionPostedEvent_V1
@@ -17,7 +40,6 @@ export function handlePredictionPosted_V1(
     event.params.settlementTime
   );
 }
-
 
 export function handleCohortSettled_V1(event: CohortSettledEvent_V1): void {
   handleCohortSettledCommon(
@@ -41,6 +63,30 @@ function handlePredictionPostedCommon(
   const marketAddress = address;
   if (!marketAddress) {
     return;
+  }
+
+  {
+    let marketTradeSize = MarketTradeSize.load(marketAddress);
+    if (!marketTradeSize) {
+      marketTradeSize = new MarketTradeSize(marketAddress);
+      const marketContract = TopCutMarket_V1.bind(marketAddress);
+      const tradeSize = marketContract.TRADE_SIZE();
+      marketTradeSize.tradeSize = tradeSize;
+      marketTradeSize.save();
+    }
+
+    {
+      let userClaims = UserPaidAndClaimed.load(user);
+      if (!userClaims) {
+        userClaims = new UserPaidAndClaimed(user);
+        userClaims.claimed = BigInt.fromI32(0);
+        userClaims.paid = BigInt.fromI32(0);
+      }
+
+      // Update the paid amount for the user
+      userClaims.paid = userClaims.paid.plus(marketTradeSize.tradeSize);
+      userClaims.save();
+    }
   }
 
   let marketTrades = MarketTrades.load(marketAddress);
