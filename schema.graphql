@@ -30,6 +30,13 @@ type SettledCohorts @entity(immutable: true) {
 
 type UserPaidAndClaimed @entity {
   id: Bytes! # trader address
+  paidAndClaims: [ClaimsPerMarket!]! @derivedFrom(field: "user")
+}
+
+type ClaimsPerMarket @entity {
+  id: Bytes! # market address + user
+  market: Bytes! # market address
+  user: UserPaidAndClaimed! @link
   claimed: BigInt! # uint256
   paid: BigInt! # uint256
 }

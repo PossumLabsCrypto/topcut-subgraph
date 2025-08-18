@@ -30,6 +30,144 @@ dataSources:
         - event: LoyaltyRewardDistributed(indexed address,uint256)
           handler: handleLoyaltyRewardDistributed
       file: ./src/top-cut-vault.ts
+
+  # ===========
+  # Old Markets
+  - kind: ethereum
+    name: OldMarkets_1
+    network: arbitrum-one
+    source:
+      address: "0x9A5f16c1f2d6b8c9530144aD23Cfa9B3c4717eF1" 
+      abi: OldMarkets
+      startBlock: 348072048
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: OldMarkets
+          file: ./abis/OldMarkets.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handleOldPredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleOldCohortSettled
+        - event: PrizesClaimed(indexed address,uint256)
+          handler: handlePrizesClaimed
+      file: ./src/market.ts
+  - kind: ethereum
+    name: OldMarkets_2
+    network: arbitrum-one
+    source:
+      address: "0x10EF281AAc569Cb011BfcB4e1C6cA490011486a5"
+      abi: OldMarkets
+      startBlock: 348072048
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: OldMarkets
+          file: ./abis/OldMarkets.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handleOldPredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleOldCohortSettled
+        - event: PrizesClaimed(indexed address,uint256)
+          handler: handlePrizesClaimed
+      file: ./src/market.ts
+  - kind: ethereum
+    name: OldMarkets_3
+    network: arbitrum-one
+    source:
+      address: "0xE8B9a818D57E2413E05144311E2d4d190c3f711c"
+      abi: OldMarkets
+      startBlock: 348072048
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: OldMarkets
+          file: ./abis/OldMarkets.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handleOldPredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleOldCohortSettled
+        - event: PrizesClaimed(indexed address,uint256)
+          handler: handlePrizesClaimed
+      file: ./src/market.ts
+  - kind: ethereum
+    name: OldMarkets_4
+    network: arbitrum-one
+    source:
+      address: "0xB8eC8622D8B7924337CA7B143683459fE5a13f79"
+      abi: OldMarkets
+      startBlock: 348072048
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: OldMarkets
+          file: ./abis/OldMarkets.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handleOldPredictionPosted
+        - event: CohortSettled(uint256,uint256,uint256)
+          handler: handleOldCohortSettled
+        - event: PrizesClaimed(indexed address,uint256)
+          handler: handlePrizesClaimed
+      file: ./src/market.ts  
+  # ===========
+  # Old Markets with settlement price (continued)
+  - kind: ethereum
+    name: OldMarkets_5
+    network: arbitrum-one
+    source:
+      address: "0x8B64Cf63B08f7eB3ad163282bf61d382DfFF0586"
+      abi: OldMarkets_V2
+      startBlock: 360029425
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: OldMarkets_V2
+          file: ./abis/OldMarkets_V2.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handleOldPredictionPosted_V2
+        - event: CohortSettled(uint256,uint256,uint256,uint256)
+          handler: handleOldCohortSettled_V2
+        - event: PrizesClaimed(indexed address,uint256)
+          handler: handlePrizesClaimed
+      file: ./src/market.ts
+
+  # ===========
+  # New Markets
   - kind: ethereum
     name: TopCutMarket_V1_3
     network: arbitrum-one
@@ -62,7 +200,7 @@ dataSources:
     source:
       address: "0xdFDab494A0E8d5Be32116Ec8e0E0e1513F302089"
       abi: TopCutMarket_V1
-      startBlock: 363495560
+      startBlock: 365303127
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -88,7 +226,59 @@ dataSources:
     source:
       address: "0x6B68BbF0492fe5c57B2Aff348B9903DB0Ba5fAa7"
       abi: TopCutMarket_V1
-      startBlock: 363495560
+      startBlock: 365302357
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: TopCutMarket_V1
+          file: ./abis/TopCutMarket_V1.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted_V1
+        - event: CohortSettled(uint256,uint256,uint256,uint256)
+          handler: handleCohortSettled_V1
+        - event: PrizesClaimed(indexed address,uint256)
+          handler: handlePrizesClaimed
+      file: ./src/market.ts
+  - kind: ethereum
+    name: TopCutMarket_V1_5
+    network: arbitrum-one
+    source:
+      address: "0x20Bff01e822c4163563B0F8aA01F0D5FDE7A644F"
+      abi: TopCutMarket_V1
+      startBlock: 368343615
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - CohortSettled
+        - PrizesClaimed
+        - PredictionPosted
+      abis:
+        - name: TopCutMarket_V1
+          file: ./abis/TopCutMarket_V1.json
+      eventHandlers:
+        - event: PredictionPosted(indexed address,indexed uint256,uint256)
+          handler: handlePredictionPosted_V1
+        - event: CohortSettled(uint256,uint256,uint256,uint256)
+          handler: handleCohortSettled_V1
+        - event: PrizesClaimed(indexed address,uint256)
+          handler: handlePrizesClaimed
+      file: ./src/market.ts
+  - kind: ethereum
+    name: TopCutMarket_V1_4
+    network: arbitrum-one
+    source:
+      address: "0x3399ED0F6dB9706b05BBD60C1f53487367F36307"
+      abi: TopCutMarket_V1
+      startBlock: 368343210
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7

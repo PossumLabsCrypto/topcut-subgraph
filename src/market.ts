@@ -1,5 +1,6 @@
 import { Address, BigInt, Bytes, store } from "@graphprotocol/graph-ts";
 import {
+  ClaimsPerMarket,
   MarketTrades,
   MarketTradeSize,
   SettledCohorts,
@@ -14,24 +15,86 @@ import {
   TopCutMarket_V1,
 } from "../generated/TopCutMarket_V1_1/TopCutMarket_V1";
 
-export function handlePrizesClaimed(event: PrizeClaimedEvent): void {
-  const trader = event.params.user;
-  const claimAmount = event.params.claimedAmount;
+import {
+  CohortSettled as OldMarketsCohortSettledEvent,
+  PredictionPosted as OldMarketsPredictionPostedEvent,
+  OldMarkets,
+} from "../generated/OldMarkets_1/OldMarkets";
+import {
+  CohortSettled as OldMarketsCohortSettledEvent_V2,
+  PredictionPosted as OldMarketsPredictionPostedEvent_V2,
+  OldMarkets_V2,
+} from "../generated/OldMarkets_5/OldMarkets_V2";
 
-  let userClaims = UserPaidAndClaimed.load(trader);
-  if (!userClaims) {
-    userClaims = new UserPaidAndClaimed(trader);
-    userClaims.claimed = BigInt.fromI32(0);
-    userClaims.paid = BigInt.fromI32(0);
-  }
+export function handleOldPredictionPosted(
+  event: OldMarketsPredictionPostedEvent
+): void {
+  let marketContract = OldMarkets.bind(event.address);
+  let tradeDuration = marketContract.TRADE_DURATION();
 
-  userClaims.claimed = userClaims.claimed.plus(claimAmount);
-  userClaims.save();
+  let tradeSize = marketContract.TRADE_SIZE();
+  updateMarketTradeSize(event.address, event.params.user, tradeSize);
+
+  handlePredictionPostedCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.user,
+    event.params.price,
+    event.params.settlementTime.plus(tradeDuration)
+  );
+}
+export function handleOldPredictionPosted_V2(
+  event: OldMarketsPredictionPostedEvent_V2
+): void {
+  let marketContract = OldMarkets_V2.bind(event.address);
+  let tradeDuration = marketContract.TRADE_DURATION();
+
+  let tradeSize = marketContract.TRADE_SIZE();
+  updateMarketTradeSize(event.address, event.params.user, tradeSize);
+
+  handlePredictionPostedCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.user,
+    event.params.price,
+    event.params.settlementTime.plus(tradeDuration)
+  );
+}
+
+export function handleOldCohortSettled(
+  event: OldMarketsCohortSettledEvent
+): void {
+  handleCohortSettledCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.settlementTime,
+    event.params.cohortSize,
+    event.params.winners,
+    null // Old markets do not have settlementPrice
+  );
+}
+
+export function handleOldCohortSettled_V2(
+  event: OldMarketsCohortSettledEvent_V2
+): void {
+  handleCohortSettledCommon(
+    event.address,
+    event.transaction.hash,
+    event.params.settlementTime,
+    event.params.cohortSize,
+    event.params.winners,
+    event.params.settlementPrice // V3 has settlementPrice
+  );
 }
 
 export function handlePredictionPosted_V1(
   event: PredictionPostedEvent_V1
 ): void {
+  let marketContract = TopCutMarket_V1.bind(event.address);
+
+  let tradeSize = marketContract.TRADE_SIZE();
+  updateMarketTradeSize(event.address, event.params.user, tradeSize);
+
   handlePredictionPostedCommon(
     event.address,
     event.transaction.hash,
@@ -48,11 +111,68 @@ export function handleCohortSettled_V1(event: CohortSettledEvent_V1): void {
     event.params.settlementTime,
     event.params.cohortSize,
     event.params.winners,
-    event.params.settlementPrice // V3 has settlementPrice
+    event.params.settlementPrice
   );
 }
 
+export function handlePrizesClaimed(event: PrizeClaimedEvent): void {
+  const trader = event.params.user;
+  const claimAmount = event.params.claimedAmount;
+  const marketAddress = event.address;
+
+  let userClaims = UserPaidAndClaimed.load(trader);
+  let claimsPerMarket = ClaimsPerMarket.load(marketAddress.concat(trader));
+  if (!userClaims) {
+    userClaims = new UserPaidAndClaimed(trader);
+  }
+  if (!claimsPerMarket) {
+    claimsPerMarket = new ClaimsPerMarket(marketAddress.concat(trader));
+    claimsPerMarket.claimed = BigInt.fromI32(0);
+    claimsPerMarket.user = trader;
+    claimsPerMarket.market = marketAddress;
+    claimsPerMarket.paid = BigInt.fromI32(0);
+  }
+
+  claimsPerMarket.claimed = claimsPerMarket.claimed.plus(claimAmount);
+  claimsPerMarket.save();
+
+  userClaims.save();
+}
+
 // Common implementation functions
+function updateMarketTradeSize(
+  marketAddress: Address,
+  user: Address,
+  tradeSize: BigInt
+): void {
+  let marketTradeSize = MarketTradeSize.load(marketAddress);
+  if (!marketTradeSize) {
+    marketTradeSize = new MarketTradeSize(marketAddress);
+    marketTradeSize.tradeSize = tradeSize;
+    marketTradeSize.save();
+  }
+
+  {
+    let userClaims = UserPaidAndClaimed.load(user);
+    let claimsPerMarket = ClaimsPerMarket.load(marketAddress.concat(user));
+    if (!userClaims) {
+      userClaims = new UserPaidAndClaimed(user);
+    }
+    if (!claimsPerMarket) {
+      claimsPerMarket = new ClaimsPerMarket(marketAddress.concat(user));
+      claimsPerMarket.claimed = BigInt.fromI32(0);
+      claimsPerMarket.user = user;
+      claimsPerMarket.market = marketAddress;
+      claimsPerMarket.paid = BigInt.fromI32(0);
+    }
+
+    // Update the paid amount for the user
+    claimsPerMarket.paid = claimsPerMarket.paid.plus(marketTradeSize.tradeSize);
+    claimsPerMarket.save();
+    userClaims.save();
+  }
+}
+
 function handlePredictionPostedCommon(
   address: Address,
   txHash: Bytes,
@@ -63,30 +183,6 @@ function handlePredictionPostedCommon(
   const marketAddress = address;
   if (!marketAddress) {
     return;
-  }
-
-  {
-    let marketTradeSize = MarketTradeSize.load(marketAddress);
-    if (!marketTradeSize) {
-      marketTradeSize = new MarketTradeSize(marketAddress);
-      const marketContract = TopCutMarket_V1.bind(marketAddress);
-      const tradeSize = marketContract.TRADE_SIZE();
-      marketTradeSize.tradeSize = tradeSize;
-      marketTradeSize.save();
-    }
-
-    {
-      let userClaims = UserPaidAndClaimed.load(user);
-      if (!userClaims) {
-        userClaims = new UserPaidAndClaimed(user);
-        userClaims.claimed = BigInt.fromI32(0);
-        userClaims.paid = BigInt.fromI32(0);
-      }
-
-      // Update the paid amount for the user
-      userClaims.paid = userClaims.paid.plus(marketTradeSize.tradeSize);
-      userClaims.save();
-    }
   }
 
   let marketTrades = MarketTrades.load(marketAddress);
